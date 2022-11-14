@@ -1,13 +1,16 @@
 import React from 'react';
 import SudokuView from './SudokuView';
 import Matrix from './Matrix';
+import SudokuProvider from './SudokuProvider';
 
 const Solution = () => {
   return (
-      <div className="layout">
-        <SudokuView />
-        <Matrix />
-      </div>
+      <SudokuProvider>
+        <div className="layout">
+          <SudokuView />
+          <Matrix />
+        </div>
+      </SudokuProvider>
   );
 };
 
