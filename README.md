@@ -11,5 +11,6 @@ Hyper Sudoku is a project that aims to solve Hyper Sudoku using Knuth's Algorith
 5. run `npm start`
 6. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
+test
 # Author(Alphabetical Order)
 Liyang Song, Na Yin, Xueyan Feng, Yun Cao
