@@ -26,6 +26,11 @@ export const generateMatrix = function() {
         matrix[i][column] = 1;
     }
     // Row Constraints: there is only one number of 1-9 in a row.
-
+    // TODO add more constraints.
     return matrix;
+}
+
+export const initSudoku = function(sudoku, matrix) {
+    const logs = [];
+    return {sudoku, matrix, logs}
 }
