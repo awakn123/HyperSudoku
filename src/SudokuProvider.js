@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import {initialSudoku, generateMatrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
 const SudokuProvider = ({ children }) => {
-  const [data, setData] = useState(new Array(9).fill(0).map((val, idx) => new Array(9).fill(0)))
+  const [data, setData] = useState(initialSudoku)
+  const [matrix, setMatrix] = useState(generateMatrix())
 
   const next = () => {
     data[0][0]++;
@@ -16,6 +18,7 @@ const SudokuProvider = ({ children }) => {
           value={{
             data,
             next,
+            matrix,
           }}
       >
         {children}
