@@ -56,8 +56,8 @@ export class Matrix {
       });
       deleteCols.push(idx);
     });
-    this.deletedRows = [...new Set(...this.deletedRows, ...deleteRows)];
-    this.deletedColumns = [...new Set(...this.deletedColumns, ...deleteCols)];
+    this.deletedRows = [...new Set([...this.deletedRows, ...deleteRows])];
+    this.deletedColumns = [...new Set([...this.deletedColumns, ...deleteCols])];
   };
 
   chooseNumber() {
