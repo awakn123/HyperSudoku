@@ -1,3 +1,4 @@
+
 export const initialSudoku = [
   [0, 0, 0, 0, 2, 0, 0, 0, 0],
   [9, 7, 0, 0, 0, 0, 3, 5, 0],
@@ -14,10 +15,19 @@ class Number {
   row = -1;
   column = -1;
   value = 0;
+
   constructor(row, column, value) {
     this.row = row;
     this.column = column;
     this.value = value;
+  }
+
+  static convertRowNumberToNumber(rowNumber) {
+    let row = Math.floor(rowNumber / 81);
+    rowNumber %= 81;
+    let col = Math.floor(rowNumber / 9);
+    let value = 1 + (rowNumber % 9);
+    return new Number(row, col, value);
   }
 }
 
@@ -25,11 +35,22 @@ export class Matrix {
   matrix;
   deletedRows = [];
   deletedColumns = [];
-  addLogs = () => {}
-  constructor(sudoku, addLogs) {
-    this.matrix = generateMatrix();
-    this.addLogs = addLogs;
-    this.initBySudoku(sudoku);
+  addLogs = () => {
+  };
+
+  constructor(first, addLogs) {
+    if (first instanceof Array) {
+      let sudoku = first;
+      this.matrix = generateMatrix();
+      this.addLogs = addLogs;
+      this.initBySudoku(sudoku);
+    } else if (first instanceof Matrix) {
+      const {matrix, deletedRows, deletedColumns, addLogs} = first;
+      this.matrix = matrix;
+      this.deletedColumns = deletedColumns;
+      this.deletedRows = deletedRows;
+      this.addLogs = addLogs;
+    }
   }
 
   initBySudoku(sudoku) {
@@ -40,7 +61,7 @@ export class Matrix {
         }
         this.removeMatrix(new Number(ri, ci, val));
       });
-    })
+    });
   }
 
   removeMatrix(number) {
@@ -61,9 +82,56 @@ export class Matrix {
   };
 
   chooseNumber() {
-    return new Number();
+    if (this.deletedRows.length >= this.matrix.length
+        || this.deletedColumns.length >= this.matrix[0].length)
+      return;
+    const rangeColumn = this.matrix[0].length - this.deletedColumns.length;
+    let randomColumn = Math.floor(Math.random() * rangeColumn);
+    let chooseColumn = Matrix.countActualLine(this.deletedColumns, randomColumn);
+    let chooseRow = -1;
+    for (let i = 0; i < this.matrix.length; i++) {
+      // TODO if failed in this iteration, how could restart it?
+      if (this.matrix[i][chooseColumn] == 1 &&
+          this.deletedRows.findIndex((r) => r === i) < 0) {
+        chooseRow = i;
+        break;
+      }
+    }
+    let number = Number.convertRowNumberToNumber(chooseRow);
+    for (let col = 0; col < this.matrix[chooseRow].length; col++) {
+      if (this.matrix[chooseRow][col] === 0 ||
+          this.deletedColumns.findIndex((r) => r === col) >= 0) {
+        continue;
+      }
+      for (let row = 0; row < this.matrix.length; row++) {
+        if (this.matrix[row][col] === 0 ||
+            this.deletedRows.findIndex((r) => r === row) >= 0) {
+          continue;
+        }
+        this.deletedRows.push(row);
+      }
+      this.deletedColumns.push(col);
+    }
+    return number;
   }
 
+  static countActualLine(deletedArray, randomNum) {
+    let chooseLine = 0;
+    for (let i = 0; i < deletedArray.length; i++) {
+      let deletedLine = deletedArray[i];
+      if (deletedLine - chooseLine > randomNum) {
+        chooseLine += randomNum;
+        break;
+      } else {
+        chooseLine++;
+      }
+    }
+    return chooseLine;
+  }
+
+  static copyMatrix(matrix) {
+    return new Matrix(matrix);
+  }
 }
 
 /**
@@ -76,7 +144,7 @@ export class Matrix {
  * The second 81 columns are row constraints. Each of 1-9 appears once in a row.
  */
 export const generateMatrix = function() {
-  let matrix = new Array(729).fill(0).map((val, idx) => new Array(384).fill(0));
+  let matrix = new Array(729).fill(0).map((val, idx) => new Array(81).fill(0));
   // Cell Constraints: One Row, one column can only have one number.
   for (let i = 0; i < matrix.length; i++) {
     let column = Math.floor(i / 9);

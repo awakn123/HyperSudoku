@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {initialSudoku, generateMatrix, initSudoku, Matrix} from './SudokuAlgorithm'
+import {initialSudoku, Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
@@ -12,9 +12,14 @@ const SudokuProvider = ({ children }) => {
   const [data, setData] = useState(initialSudoku)
   const [matrix, setMatrix] = useState(initialMatrix)
 
-
   const next = () => {
-    setData([...data]);
+    const num = matrix.chooseNumber();
+    console.log(data, num);
+    let sudoku = [...data.map(arr => [...arr])];
+    sudoku[num.row][num.column] = num.value;
+    setData(sudoku);
+    setMatrix(Matrix.copyMatrix(matrix));
+    console.log(sudoku);
   }
 
   return (
