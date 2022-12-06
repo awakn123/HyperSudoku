@@ -5,9 +5,11 @@ export const SudokuContext = React.createContext({});
 
 const SudokuProvider = ({ children }) => {
   const basicMatrix = generateMatrix();
-  const {sudoku, matrix: initialMatrix, logs: initialLogs} = initSudoku(initialSudoku, basicMatrix);
+  const {sudoku, matrix: initialMatrix, logs: initialLogs,
+    deletedRows: initialDeletedRows} = initSudoku(initialSudoku, basicMatrix);
   const [data, setData] = useState(sudoku)
   const [matrix, setMatrix] = useState(initialMatrix)
+  const [deletedRows, setDeletedRows] = useState(initialDeletedRows)
   const [logs, setLogs] = useState(initialLogs)
   const addLogs = (...newLogs) => {
     setLogs([...logs, ...newLogs]);
@@ -26,6 +28,7 @@ const SudokuProvider = ({ children }) => {
             next,
             logs,
             matrix,
+            deletedRows,
           }}
       >
         {children}
