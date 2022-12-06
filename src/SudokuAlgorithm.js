@@ -9,6 +9,63 @@ export const initialSudoku = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 4, 3, 0, 0, 1, 0],
 ];
+
+class Number {
+  row = -1;
+  column = -1;
+  value = 0;
+  constructor(row, column, value) {
+    this.row = row;
+    this.column = column;
+    this.value = value;
+  }
+}
+
+export class Matrix {
+  matrix;
+  deletedRows = [];
+  deletedColumns = [];
+  addLogs = () => {}
+  constructor(sudoku, addLogs) {
+    this.matrix = generateMatrix();
+    this.addLogs = addLogs;
+    this.initBySudoku(sudoku);
+  }
+
+  initBySudoku(sudoku) {
+    sudoku.forEach((row, ri) => {
+      row.forEach((val, ci) => {
+        if (val == 0) {
+          return;
+        }
+        this.removeMatrix(new Number(ri, ci, val));
+      });
+    })
+  }
+
+  removeMatrix(number) {
+    const choseRowIndex = number.row * 81 + number.column * 9 + (number.value - 1);
+    const choseRow = this.matrix[choseRowIndex];
+    let deleteRows = [choseRowIndex], deleteCols = [];
+    choseRow.forEach((val, idx) => {
+      if (val == 0) return;
+      this.matrix.forEach((matrixRow, ri) => {
+        if (matrixRow[idx] == 0)
+          return;
+        deleteRows.push(ri);
+      });
+      deleteCols.push(idx);
+    });
+    this.deletedRows = [...new Set(...this.deletedRows, ...deleteRows)];
+    this.deletedColumns = [...new Set(...this.deletedColumns, ...deleteCols)];
+  };
+
+  chooseNumber() {
+    return new Number();
+  }
+
+}
+
 /**
  * Generate an initial 729 * 384 matrix.
  * The first row means row 1 column 1, number is 1, marked as r1c1#1.
@@ -28,33 +85,4 @@ export const generateMatrix = function() {
   // Row Constraints: there is only one number of 1-9 in a row.
   // TODO add more constraints.
   return matrix;
-};
-
-export const initSudoku = function(sudoku, matrix) {
-  const logs = [];
-  let deletedRows = sudoku.map((row, ri) => {
-    row.map((val, ci) => {
-      if (val == 0) {
-        return;
-      }
-      return removeMatrix(ri, ci, val, matrix);
-    });
-  }).flat(3);
-  deletedRows = [...new Set(deletedRows)];
-  return {sudoku, matrix, logs, deletedRows};
-};
-
-const removeMatrix = function(rowIndex, colIndex, number, matrix) {
-  const choseRowIndex = rowIndex * 81 + colIndex * 9 + (number - 1);
-  const choseRow = matrix[choseRowIndex];
-  let deleteRows = [choseRowIndex];
-  choseRow.forEach((val, idx) => {
-    if (val == 0) return;
-    matrix.forEach((matrixRow, ri) => {
-      if (matrixRow[idx] == 0)
-        return;
-      deleteRows.push(ri);
-    });
-  });
-  return deleteRows;
 };

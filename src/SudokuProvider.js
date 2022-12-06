@@ -1,23 +1,19 @@
 import React, {useState} from 'react';
-import {initialSudoku, generateMatrix, initSudoku} from './SudokuAlgorithm'
+import {initialSudoku, generateMatrix, initSudoku, Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
 const SudokuProvider = ({ children }) => {
-  const basicMatrix = generateMatrix();
-  const {sudoku, matrix: initialMatrix, logs: initialLogs,
-    deletedRows: initialDeletedRows} = initSudoku(initialSudoku, basicMatrix);
-  const [data, setData] = useState(sudoku)
-  const [matrix, setMatrix] = useState(initialMatrix)
-  const [deletedRows, setDeletedRows] = useState(initialDeletedRows)
-  const [logs, setLogs] = useState(initialLogs)
+  const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
     setLogs([...logs, ...newLogs]);
   }
+  const initialMatrix = new Matrix(initialSudoku, addLogs);
+  const [data, setData] = useState(initialSudoku)
+  const [matrix, setMatrix] = useState(initialMatrix)
+
 
   const next = () => {
-    data[0][0]++;
-    data[0][0]++;
     setData([...data]);
   }
 
@@ -26,9 +22,7 @@ const SudokuProvider = ({ children }) => {
           value={{
             data,
             next,
-            logs,
             matrix,
-            deletedRows,
           }}
       >
         {children}
