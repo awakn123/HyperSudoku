@@ -19,7 +19,7 @@ export const initialSudoku = [
  * The second 81 columns are row constraints. Each of 1-9 appears once in a row.
  */
 export const generateMatrix = function() {
-    let matrix = new Array(729).map((val, idx) => new Array(384).fill(0));
+    let matrix = new Array(729).fill(0).map((val, idx) => new Array(384).fill(0));
     // Cell Constraints: One Row, one column can only have one number.
     for (let i=0; i<matrix.length; i++) {
         let column = Math.floor(i/9);
