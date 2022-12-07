@@ -1,8 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {initialSudoku, Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 const initialMatrix = new Matrix(initialSudoku);
 
 const SudokuProvider = ({ children }) => {
@@ -37,6 +56,10 @@ const SudokuProvider = ({ children }) => {
     setNode(nextNode);
     console.log(sudoku);
   }
+
+  useInterval(() => {
+    next();
+  }, 1000);
 
   return (
       <SudokuContext.Provider
