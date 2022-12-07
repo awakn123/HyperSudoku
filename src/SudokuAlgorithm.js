@@ -99,12 +99,13 @@ class Node {
     }
   }
 
-  get fail() {
+  checkFail() {
     if (this.runningMatrix.length === 0) return true;
     if (this.matrixCol === -1) return true;
     if (this.possibleMatrixRows.length === 0) return true;
     return this.fail;
   }
+
 }
 
 export class Matrix {
@@ -145,7 +146,7 @@ export class Matrix {
   removeMatrix(number) {
     const choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
     let deleteRows = [choseRow], deleteCols = [];
-    choseRow.forEach((val, idx) => {
+    choseRow.cells.forEach((val, idx) => {
       if (val == 0) return;
       this.runningMatrix = this.runningMatrix.filter((matrixRow) => {
         if (matrixRow.cells[idx] == 0)

@@ -15,7 +15,7 @@ const SudokuProvider = ({ children }) => {
 
   const next = () => {
     let {number} = node, value = 0, nextNode;
-    if (node.fail) {
+    if (node.checkFail()) {
       nextNode = node.revert();
       matrix.revert(node);
     } else {
