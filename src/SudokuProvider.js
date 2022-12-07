@@ -3,12 +3,14 @@ import {initialSudoku, Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
+const initialMatrix = new Matrix(initialSudoku);
+
 const SudokuProvider = ({ children }) => {
   const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
     setLogs([...logs, ...newLogs]);
   }
-  const initialMatrix = new Matrix(initialSudoku, addLogs);
+  initialMatrix.addLogs = addLogs;
   const [data, setData] = useState(initialSudoku)
   const [matrix, setMatrix] = useState(initialMatrix)
   const [node, setNode] = useState(matrix.root);

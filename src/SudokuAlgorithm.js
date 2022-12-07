@@ -47,7 +47,10 @@ class Node {
     this.runningMatrix = runningMatrix;
     this.matrixCol = this.findLeastConstraintsColumn();
     this.possibleMatrixRows = this.findPossibleMatrixRows();
-    this.parent = parent;
+    if (parent) {
+      this.parent = parent;
+      parent.children.push(this);
+    }
   }
 
   findLeastConstraintsColumn() {
@@ -115,19 +118,18 @@ export class Matrix {
   addLogs = () => {
   };
 
-  constructor(first, addLogs) {
-    if (first instanceof Array) {
-      let sudoku = first;
-      this.matrix = generateMatrix();
-      this.runningMatrix = generateMatrix();
-      this.addLogs = addLogs;
-      this.root = this.initBySudoku(sudoku);
-    } else if (first instanceof Matrix) {
+  constructor(first) {
+    if (first instanceof Matrix) {
       const {matrix, runningMatrix, root, addLogs} = first;
       this.matrix = matrix;
       this.runningMatrix = runningMatrix;
       this.root = root;
       this.addLogs = addLogs;
+    } else if (first instanceof Array) {
+      let sudoku = first;
+      this.matrix = generateMatrix();
+      this.runningMatrix = generateMatrix();
+      this.root = this.initBySudoku(sudoku);
     }
   }
 
@@ -164,10 +166,11 @@ export class Matrix {
   };
 
   chooseNumber(node) {
-    node.chooseNumber();
-    const deletedRows = this.removeMatrix(node.number);
-    node.fail = this.checkFail(deletedRows);
-    return node;
+    let nextNode = node.number ? new Node(this.runningMatrix, node) : node;
+    nextNode.chooseNumber();
+    const deletedRows = this.removeMatrix(nextNode.number);
+    nextNode.fail = this.checkFail(deletedRows);
+    return nextNode;
   }
 
   revert(node) {
