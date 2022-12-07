@@ -1,30 +1,71 @@
-import React, {useState} from 'react';
-import {initialSudoku, generateMatrix, initSudoku} from './SudokuAlgorithm'
+import React, {useState, useEffect, useRef} from 'react';
+import {initialSudoku, Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+const initialMatrix = new Matrix(initialSudoku);
+
 const SudokuProvider = ({ children }) => {
-  const basicMatrix = generateMatrix();
-  const {sudoku, matrix: initialMatrix, logs: initialLogs} = initSudoku(initialSudoku, basicMatrix);
-  const [data, setData] = useState(sudoku)
-  const [matrix, setMatrix] = useState(initialMatrix)
-  const [logs, setLogs] = useState(initialLogs)
+  const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
     setLogs([...logs, ...newLogs]);
   }
+  initialMatrix.addLogs = addLogs;
+  const [data, setData] = useState(initialSudoku)
+  const [matrix, setMatrix] = useState(initialMatrix)
+  const [node, setNode] = useState(matrix.root);
 
   const next = () => {
-    data[0][0]++;
-    data[0][0]++;
-    setData([...data]);
+    if (matrix.checkSuccess()) {
+      return true;
+    }
+    let {number} = node, value = 0, nextNode;
+    if (node.checkFail()) {
+      nextNode = node.revert();
+      matrix.revert(node);
+    } else {
+      nextNode = matrix.chooseNumber(node);
+      setNode(nextNode);
+      number = nextNode.number;
+      value = number.value;
+    }
+    console.log(data, number);
+    let sudoku = [...data.map(arr => [...arr])];
+    sudoku[number.row][number.column] = value;
+    setData(sudoku);
+    setMatrix(Matrix.copyMatrix(matrix));
+    setNode(nextNode);
+    console.log(sudoku);
   }
+
+  useInterval(() => {
+    next();
+  }, 1000);
 
   return (
       <SudokuContext.Provider
           value={{
             data,
             next,
-            logs,
             matrix,
           }}
       >
