@@ -1,4 +1,3 @@
-
 export const initialSudoku = [
   [0, 0, 0, 0, 2, 0, 0, 0, 0],
   [9, 7, 0, 0, 0, 0, 3, 5, 0],
@@ -15,11 +14,13 @@ class Number {
   row = -1;
   column = -1;
   value = 0;
+  matrixLineNumber = -1;
 
   constructor(row, column, value) {
     this.row = row;
     this.column = column;
     this.value = value;
+    this.matrixLineNumber = this.row * 81 + this.column * 9 + this.value - 1;
   }
 
   static convertRowNumberToNumber(rowNumber) {
@@ -31,10 +32,85 @@ class Number {
   }
 }
 
+class Node {
+  parent = null;
+  children = [];
+  matrixCol = -1;
+  possibleMatrixRows = [];
+  runningMatrix = [];// Matrix before number is chosen.
+
+  number = null;
+  fail = false;
+  failedNumbers = [];
+
+  constructor(runningMatrix, parent) {
+    this.runningMatrix = runningMatrix;
+    this.matrixCol = this.findLeastConstraintsColumn();
+    this.possibleMatrixRows = this.findPossibleMatrixRows();
+    this.parent = parent;
+  }
+
+  findLeastConstraintsColumn() {
+    if (this.runningMatrix.length === 0) return -1;
+    let minCol = -1, min = 10;
+    for (let j = 0; j < this.runningMatrix[0].cells.length; j++) {
+      let count = 0;
+      for (let i = 0; i < this.runningMatrix.length; i++) {
+        if (this.runningMatrix[i].cells[j] === 1)
+          count++;
+      }
+      if (count < min) {
+        min = count;
+        minCol = j;
+      }
+    }
+    return minCol;
+  }
+
+  findPossibleMatrixRows() {
+    if (this.matrixCol == -1) return [];
+    return this.runningMatrix.map((matrixRow) => {
+      return matrixRow.cells[this.matrixCol] === 1 ? matrixRow : null;
+    }).filter((val) => !!val);
+  }
+
+  chooseNumber() {
+    let idx = Math.floor(Math.random() * this.possibleMatrixRows.length);
+    let matrixRow = this.possibleMatrixRows[idx];
+    this.number = matrixRow.number;
+    this.possibleMatrixRows.splice(idx, 1);
+  }
+
+  /**
+   * Failed, revert to empty.
+   * If there is other possible values, this node could move forward, and will return this.
+   * If there is no possible values, this node fails totally, and the parent with its value fails. Will return the parent for next revert.
+   * @returns {Node|null}
+   */
+  revert() {
+    this.failedNumbers.push(this.number);
+    this.number = null;
+    if (this.possibleMatrixRows.length === 0) {
+      this.parent.fail = true;
+      return this.parent;
+    } else {
+      this.fail = false;
+      return this;
+    }
+  }
+
+  get fail() {
+    if (this.runningMatrix.length === 0) return true;
+    if (this.matrixCol === -1) return true;
+    if (this.possibleMatrixRows.length === 0) return true;
+    return this.fail;
+  }
+}
+
 export class Matrix {
   matrix;
-  deletedRows = [];
-  deletedColumns = [];
+  runningMatrix;
+  root;
   addLogs = () => {
   };
 
@@ -42,13 +118,14 @@ export class Matrix {
     if (first instanceof Array) {
       let sudoku = first;
       this.matrix = generateMatrix();
+      this.runningMatrix = generateMatrix();
       this.addLogs = addLogs;
-      this.initBySudoku(sudoku);
+      this.root = this.initBySudoku(sudoku);
     } else if (first instanceof Matrix) {
-      const {matrix, deletedRows, deletedColumns, addLogs} = first;
+      const {matrix, runningMatrix, root, addLogs} = first;
       this.matrix = matrix;
-      this.deletedColumns = deletedColumns;
-      this.deletedRows = deletedRows;
+      this.runningMatrix = runningMatrix;
+      this.root = root;
       this.addLogs = addLogs;
     }
   }
@@ -62,71 +139,61 @@ export class Matrix {
         this.removeMatrix(new Number(ri, ci, val));
       });
     });
+    return new Node([...this.runningMatrix]);
   }
 
   removeMatrix(number) {
-    const choseRowIndex = number.row * 81 + number.column * 9 + (number.value - 1);
-    const choseRow = this.matrix[choseRowIndex];
-    let deleteRows = [choseRowIndex], deleteCols = [];
+    const choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
+    let deleteRows = [choseRow], deleteCols = [];
     choseRow.forEach((val, idx) => {
       if (val == 0) return;
-      this.matrix.forEach((matrixRow, ri) => {
-        if (matrixRow[idx] == 0)
-          return;
-        deleteRows.push(ri);
+      this.runningMatrix = this.runningMatrix.filter((matrixRow) => {
+        if (matrixRow.cells[idx] == 0)
+          return true;
+        deleteRows.push(matrixRow);
+        this.matrix[matrixRow.number.matrixLineNumber].isDeleted = true;
+        return false;
       });
       deleteCols.push(idx);
     });
-    this.deletedRows = [...new Set([...this.deletedRows, ...deleteRows])];
-    this.deletedColumns = [...new Set([...this.deletedColumns, ...deleteCols])];
+    this.runningMatrix = this.runningMatrix.map((matrixRow) => {
+      return {...matrixRow, cells: matrixRow.cells.filter((val, idx) => deleteCols.indexOf(idx) < 0)};
+    });
+    return deleteRows;
   };
 
-  chooseNumber() {
-    if (this.deletedRows.length >= this.matrix.length
-        || this.deletedColumns.length >= this.matrix[0].length)
-      return;
-    const rangeColumn = this.matrix[0].length - this.deletedColumns.length;
-    let randomColumn = Math.floor(Math.random() * rangeColumn);
-    let chooseColumn = Matrix.countActualLine(this.deletedColumns, randomColumn);
-    let chooseRow = -1;
-    for (let i = 0; i < this.matrix.length; i++) {
-      // TODO if failed in this iteration, how could restart it?
-      if (this.matrix[i][chooseColumn] == 1 &&
-          this.deletedRows.findIndex((r) => r === i) < 0) {
-        chooseRow = i;
-        break;
-      }
-    }
-    let number = Number.convertRowNumberToNumber(chooseRow);
-    for (let col = 0; col < this.matrix[chooseRow].length; col++) {
-      if (this.matrix[chooseRow][col] === 0 ||
-          this.deletedColumns.findIndex((r) => r === col) >= 0) {
-        continue;
-      }
-      for (let row = 0; row < this.matrix.length; row++) {
-        if (this.matrix[row][col] === 0 ||
-            this.deletedRows.findIndex((r) => r === row) >= 0) {
-          continue;
-        }
-        this.deletedRows.push(row);
-      }
-      this.deletedColumns.push(col);
-    }
-    return number;
+  chooseNumber(node) {
+    node.chooseNumber();
+    const deletedRows = this.removeMatrix(node.number);
+    node.fail = this.checkFail(deletedRows);
+    return node;
   }
 
-  static countActualLine(deletedArray, randomNum) {
-    let chooseLine = 0;
-    for (let i = 0; i < deletedArray.length; i++) {
-      let deletedLine = deletedArray[i];
-      if (deletedLine - chooseLine > randomNum) {
-        chooseLine += randomNum;
-        break;
-      } else {
-        chooseLine++;
+  revert(node) {
+    this.runningMatrix = node.runningMatrix;
+  }
+
+  /**
+   * Check whether this branch fails.
+   * By checking all sudoku cells relating to deleted rows can be filled with other values.
+   * @param deletedRows
+   * @returns {boolean}
+   */
+  checkFail(deletedRows) {
+    for (let i = 0; i = deletedRows.length < 0; i++) {
+      let {number} = deletedRows[i];
+      let start = number - number%9, end = start + 9;
+      let fail = true;
+      for (let j = start; j < end; j++) {
+        if (!this.matrix[j].isDeleted) {
+          fail = false;
+          break;
+        }
       }
+      if (fail)
+        return true;
     }
-    return chooseLine;
+    return false;
   }
 
   static copyMatrix(matrix) {
@@ -144,11 +211,15 @@ export class Matrix {
  * The second 81 columns are row constraints. Each of 1-9 appears once in a row.
  */
 export const generateMatrix = function() {
-  let matrix = new Array(729).fill(0).map((val, idx) => new Array(81).fill(0));
+  let matrix = new Array(729).fill(0).map((val, idx) =>
+      ({
+        number: Number.convertRowNumberToNumber(idx),
+        cells: new Array(81).fill(0),
+      }));
   // Cell Constraints: One Row, one column can only have one number.
   for (let i = 0; i < matrix.length; i++) {
     let column = Math.floor(i / 9);
-    matrix[i][column] = 1;
+    matrix[i].cells[column] = 1;
   }
   // Row Constraints: there is only one number of 1-9 in a row.
   // TODO add more constraints.

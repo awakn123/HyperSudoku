@@ -11,14 +11,25 @@ const SudokuProvider = ({ children }) => {
   const initialMatrix = new Matrix(initialSudoku, addLogs);
   const [data, setData] = useState(initialSudoku)
   const [matrix, setMatrix] = useState(initialMatrix)
+  const [node, setNode] = useState(matrix.root);
 
   const next = () => {
-    const num = matrix.chooseNumber();
-    console.log(data, num);
+    let {number} = node, value = 0, nextNode;
+    if (node.fail) {
+      nextNode = node.revert();
+      matrix.revert(node);
+    } else {
+      nextNode = matrix.chooseNumber(node);
+      setNode(nextNode);
+      number = nextNode.number;
+      value = number.value;
+    }
+    console.log(data, number);
     let sudoku = [...data.map(arr => [...arr])];
-    sudoku[num.row][num.column] = num.value;
+    sudoku[number.row][number.column] = value;
     setData(sudoku);
     setMatrix(Matrix.copyMatrix(matrix));
+    setNode(nextNode);
     console.log(sudoku);
   }
 
