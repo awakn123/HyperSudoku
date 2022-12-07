@@ -200,6 +200,10 @@ export class Matrix {
     return false;
   }
 
+  checkSuccess() {
+    return this.runningMatrix.length === 0;
+  }
+
   static copyMatrix(matrix) {
     return new Matrix(matrix);
   }

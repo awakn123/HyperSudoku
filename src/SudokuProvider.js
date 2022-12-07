@@ -16,6 +16,9 @@ const SudokuProvider = ({ children }) => {
   const [node, setNode] = useState(matrix.root);
 
   const next = () => {
+    if (matrix.checkSuccess()) {
+      return true;
+    }
     let {number} = node, value = 0, nextNode;
     if (node.checkFail()) {
       nextNode = node.revert();
