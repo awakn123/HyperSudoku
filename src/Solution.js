@@ -1,6 +1,5 @@
 import React from 'react';
 import SudokuView from './SudokuView';
-import Matrix from './Matrix';
 import SudokuProvider from './SudokuProvider';
 
 const Solution = () => {
@@ -8,7 +7,6 @@ const Solution = () => {
       <SudokuProvider>
         <div className="layout">
           <SudokuView />
-          <Matrix />
         </div>
       </SudokuProvider>
   );
