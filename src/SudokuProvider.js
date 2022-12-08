@@ -27,7 +27,7 @@ const initialMatrix = new Matrix(initialSudoku);
 const SudokuProvider = ({ children }) => {
   const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
-    setLogs([...logs, ...newLogs]);
+    setLogs((prevLogs) => [...prevLogs, ...newLogs]);
   }
   initialMatrix.addLogs = addLogs;
   const [data, setData] = useState(initialSudoku)
@@ -54,12 +54,12 @@ const SudokuProvider = ({ children }) => {
     setData(sudoku);
     setMatrix(Matrix.copyMatrix(matrix));
     setNode(nextNode);
-    console.log(sudoku);
+    console.log(sudoku, logs);
   }
 
-  useInterval(() => {
-    next();
-  }, 1000);
+  // useInterval(() => {
+  //   next();
+  // }, 1000);
 
   return (
       <SudokuContext.Provider
