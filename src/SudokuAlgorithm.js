@@ -230,6 +230,26 @@ export const generateMatrix = function() {
     matrix[i].cells[column] = 1;
   }
   // Row Constraints: there is only one number of 1-9 in a row.
+  for (let i = 80; i < 162; i++) {
+    for (let j = 0; j < 9; i++){
+        matrix[j].cells[i] = 1;
+    }
+  }
+
+  // Column Constraints: there is only one number of 1-9 in a row.
+    for (let i = 161; i < 243; i++) {
+      for (let j = 0; j < 81; i++){
+          matrix[j].cells[i] = 1;
+      }
+    }
+
+  // Row Constraints: there is only one number of 1-9 in a row.
+  for (let i = 242; i < 324; i++) {
+    for (let j = 0; j < 27; i++){
+        matrix[j].cells[i] = 1;
+    }
+  }
+
   // TODO add more constraints.
   return matrix;
 };
