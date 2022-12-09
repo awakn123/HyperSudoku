@@ -9,11 +9,11 @@ const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {data, logs, next} = sudokuData;
   const sudokuTable = () => {
-    const row = [];
     const table = [];
     for (let i = 0; i < 9; i++) {
+      const row = [];
       for (let j = 0; j < 9; j++) {
-        row.push(<td className="r{i+1}c{j+1}" key={`td_${i}${j}`}>{data[i][j]}</td>);
+        row.push(<td key={`td_${i}${j}`}>{data[i][j]}</td>);
       }
       table.push(<tr key={`tr_${i}`}>{row}</tr>);
     }
