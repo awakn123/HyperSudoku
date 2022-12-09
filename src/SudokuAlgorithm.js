@@ -109,7 +109,7 @@ class Node {
     this.failedNumbers.push(this.number);
     this.addLogs(`${this.number} is reverted.`)
     this.number = null;
-    if (this.possibleMatrixRows.length === 0) {
+    if (this.possibleMatrixRows.length === 0 && this.parent != null) {
       this.addLogs(`Return to parent node.`)
       this.parent.fail = true;
       return this.parent;
@@ -247,7 +247,7 @@ export const generateMatrix = function() {
   let matrix = new Array(729).fill(0).map((val, idx) =>
       ({
         number: Number.convertRowNumberToNumber(idx),
-        cells: new Array(81).fill(0),
+        cells: new Array(324).fill(0),
       }));
   // Cell Constraints: One Row, one column can only have one number.
   for (let i = 0; i < matrix.length; i++) {
@@ -268,8 +268,8 @@ export const generateMatrix = function() {
   }
 
   // Block Constraints: there is only one number of 1-9 in a block.
-  for (let j = 0; j < 729; i++){
-      let a = j%9；
+  for (let j = 0; j < 729; j++){
+      let a = j%9;
       let b = Math.floor(j/27%3);
       let c = Math.floor(j/243);
       matrix[j].cells[a + 243 + 9*(b + (3*c))] = 1;

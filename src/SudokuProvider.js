@@ -48,6 +48,10 @@ const SudokuProvider = ({ children }) => {
       number = nextNode.number;
       value = number.value;
     }
+    if (number == null) {
+      addLogs("The sudoku fails.");
+      return;
+    }
     console.log(data, number);
     let sudoku = [...data.map(arr => [...arr])];
     sudoku[number.row][number.column] = value;
@@ -57,9 +61,9 @@ const SudokuProvider = ({ children }) => {
     console.log(sudoku, logs);
   }
 
-  // useInterval(() => {
-  //   next();
-  // }, 1000);
+  useInterval(() => {
+    next();
+  }, 1000);
 
   return (
       <SudokuContext.Provider
