@@ -27,6 +27,10 @@ class Number {
     return `r${this.row + 1}c${this.column + 1}#${this.value}[${this.matrixLineNumber}]`
   }
 
+  toStringed() {
+      return `r${this.row + 1}c${this.column + 1}#${this.value}`
+    }
+
   static convertRowNumberToNumber(rowNumber) {
     let row = Math.floor(rowNumber / 81);
     rowNumber %= 81;
@@ -109,7 +113,7 @@ class Node {
     this.failedNumbers.push(this.number);
     this.addLogs(`${this.number} is reverted.`)
     this.number = null;
-    if (this.possibleMatrixRows.length === 0) {
+    if (this.possibleMatrixRows.length === 0 && this.parent != null) {
       this.addLogs(`Return to parent node.`)
       this.parent.fail = true;
       return this.parent;
@@ -235,7 +239,7 @@ export class Matrix {
 }
 
 /**
- * Generate an initial 729 * 384 matrix.
+ * Generate an initial 729 * 324 matrix.
  * The first row means row 1 column 1, number is 1, marked as r1c1#1.
  * The second row means r1c1#2,...,
  * The tenth row means r1c2#1, etc.
@@ -254,7 +258,33 @@ export const generateMatrix = function() {
     let column = Math.floor(i / 9);
     matrix[i].cells[column] = 1;
   }
-  // Row Constraints: there is only one number of 1-9 in a row.
+  // // Row Constraints: there is only one number of 1-9 in a row.
+  // for (let j = 0; j < 729; j++){
+  //     let x = j%9;
+  //     let y = Math.floor(j/81);
+  //     matrix[j].cells[x + 81 + y*9] = 1;
+  // }
+
+  // Column Constraints: there is only one number of 1-9 in a column.
+  // for (let j = 0; j < 729; j++){
+  //     let x = j%81;
+  //     matrix[j].cells[x+162] = 1;
+  // }
+
+  // // Block Constraints: there is only one number of 1-9 in a block.
+  // for (let j = 0; j < 729; j++){
+  //     let a = j%9;
+  //     let b = Math.floor(j/27%3);
+  //     let c = Math.floor(j/243);
+  //     matrix[j].cells[a + 243 + 9*(b + (3*c))] = 1;
+  // }
+  //
+  // // Hyper-Block Constraints: there is only one number of 1-9 in a Hyper-Block.
+  // for (let j = 10; j < 13; j++){
+  //   let a = j%9;
+  //
+  // }
+
   // TODO add more constraints.
   return matrix;
 };
