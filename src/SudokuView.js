@@ -9,66 +9,70 @@ const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {data, logs, next} = sudokuData;
   const sudokuTable = () => {
-    const row = [];
     const table = [];
     for (let i = 0; i < 9; i++) {
+      const row = [];
       for (let j = 0; j < 9; j++) {
-        row.push(<td class="r{i+1}c{j+1}">{data[i][j]}</td>);
+        row.push(<td key={`td_${i}${j}`}>{data[i][j]}</td>);
       }
-      table.push(<tr>{row}</tr>);
+      table.push(<tr key={`tr_${i}`}>{row}</tr>);
     }
-    return (<table class="table">{table}</table>);
+    return table;
   }
 
   return (
       <div className={"sudoku-view"}>
-        <div class="header">
-            <div class="logo">
+        <div className="header">
+            <div className="logo">
               <img src={logo} alt="NEU logo" height="60px" width="60px"/>
             </div>
 
-          <div class="title">
+          <div className="title">
             <p>Hyper Sudoku Solver</p>
           </div>
 
-          <div class="gitlogo">
+          <div className="gitlogo">
             <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
               <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
             </a>
           </div>
 
-          <div class="link">
+          <div className="link">
             <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
               <p>Github</p>
             </a>
           </div> 
         </div>
         
-        <div class="content">
-          <div class="column left">
-            <div class="sudoku">
-              {sudokuTable()}
+        <div className="content">
+          <div className="column left">
+            <div className="sudoku">
+              <table className="table">
+                <tbody>
+                  {sudokuTable()}
+                </tbody>
+              </table>
             </div>
 
-            <div class="logs">
+            <div className="logs">
               {logs}
             </div>
           </div>
 
-          <div class="column right">
-            <div class="matrix">
+          <div className="column right">
+            <div className="matrix">
               <Matrix/>
             </div>
           </div>
         </div>
       
-        <div class="footer">
-          <div class="buttons">
+        <div className="footer">
+          <div className="buttons">
             <button>Start</button>
             <button>Next</button>
           </div>
           
-          <div class="author">
+          <div className="author">
             <p>Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao</p>
           </div>
         </div> 
