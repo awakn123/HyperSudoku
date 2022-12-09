@@ -61,9 +61,9 @@ const SudokuProvider = ({ children }) => {
     console.log(sudoku, logs);
   }
 
-  useInterval(() => {
-    next();
-  }, 1000);
+  // useInterval(() => {
+  //   next();
+  // }, 1000);
 
   return (
       <SudokuContext.Provider
