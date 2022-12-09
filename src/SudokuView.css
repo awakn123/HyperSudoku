@@ -15,30 +15,28 @@
     height: 60px;
     display: flex;
     background-color: #282c34;
-    justify-content: center;
 }
 
 .logo {
     flex: 2;
     margin-left: 50px;
-    justify-content: center;
+    align-self: center;
 }
 
 .title {
-    flex: 10;
+    flex: 15;
     font-size: 25px;
     color: #ffffff;
-    justify-content: center;
+    align-self: center;
 }
 
 .gitlogo {
     flex: 1;
-    justify-content: center;
+    align-self: center;
 }
 
 .link {
-    flex: 10;
-    text-align: right;
+    flex: 2;
     align-self: center;
     margin-right: 50px;
     font-size: 20px;
