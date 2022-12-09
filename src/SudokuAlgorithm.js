@@ -24,12 +24,12 @@ class Number {
   }
 
   toString() {
-    return `r${this.row + 1}c${this.column + 1}#${this.value}[${this.matrixLineNumber}]`
+    return `r${this.row + 1}c${this.column + 1}#${this.value}[${this.matrixLineNumber}]`;
   }
 
   toStringed() {
-      return `r${this.row + 1}c${this.column + 1}#${this.value}`
-    }
+    return `r${this.row + 1}c${this.column + 1}#${this.value}`;
+  }
 
   static convertRowNumberToNumber(rowNumber) {
     let row = Math.floor(rowNumber / 81);
@@ -51,7 +51,8 @@ class Node {
   fail = false;
   failedNumbers = [];
 
-  addLogs = () => {};
+  addLogs = () => {
+  };
 
   constructor(runningMatrix, addLogs, parent) {
     this.runningMatrix = runningMatrix;
@@ -59,7 +60,7 @@ class Node {
     this.matrixCol = this.findLeastConstraintsColumn();
     this.possibleMatrixRows = this.findPossibleMatrixRows();
     if (this.matrixCol >= 0) {
-      this.addLogs(`Possible rows: [${this.possibleMatrixRows.map(({number})=> number).join()}]`);
+      this.addLogs(`Possible rows: [${this.possibleMatrixRows.map(({number}) => number).join()}]`);
     }
     if (parent) {
       this.parent = parent;
@@ -82,9 +83,9 @@ class Node {
       }
     }
     if (minCol === -1) {
-      this.addLogs("There is no column could be chosen.")
+      this.addLogs('There is no column could be chosen.');
     } else {
-      this.addLogs(`Column ${minCol} is chosen, which has ${min} constraints in it.`)
+      this.addLogs(`Column ${minCol} is chosen, which has ${min} constraints in it.`);
     }
     return minCol;
   }
@@ -111,10 +112,10 @@ class Node {
    */
   revert() {
     this.failedNumbers.push(this.number);
-    this.addLogs(`${this.number} is reverted.`)
+    this.addLogs(`${this.number} is reverted.`);
     this.number = null;
     if (this.possibleMatrixRows.length === 0 && this.parent != null) {
-      this.addLogs(`Return to parent node.`)
+      this.addLogs(`Return to parent node.`);
       this.parent.fail = true;
       return this.parent;
     } else {
@@ -126,8 +127,8 @@ class Node {
   checkFail() {
     if (this.runningMatrix.length === 0) return true;
     if (this.matrixCol === -1) return true;
-    if (this.possibleMatrixRows.length === 0) {
-      this.addLogs("There is no possible rows.")
+    if (this.possibleMatrixRows.length === 0 && this.number == null) {
+      this.addLogs('There is no possible rows.');
       return true;
     }
     return this.fail;
@@ -186,15 +187,15 @@ export class Matrix {
     this.runningMatrix = this.runningMatrix.map((matrixRow) => {
       return {...matrixRow, cells: matrixRow.cells.filter((val, idx) => deleteCols.indexOf(idx) < 0)};
     });
-    this.addLogs(`${deleteCols.length} columns in matrix are deleted`)
-    this.addLogs(`${deleteRows.length}(${deleteRows.map(({number})=> number).join()}) rows in matrix are deleted`)
+    this.addLogs(`${deleteCols.length} columns in matrix are deleted.`);
+    this.addLogs(`${deleteRows.length} rows in matrix(${deleteRows.map(({number}) => number).join()}) are deleted.`);
     return deleteRows;
-  };
+  }
 
   chooseNumber(node) {
     let nextNode = node.number ? new Node(this.runningMatrix, this.addLogs, node) : node;
     nextNode.chooseNumber();
-    this.addLogs(`${nextNode.number} is chosen.`)
+    this.addLogs(`${nextNode.number} is chosen.`);
     const deletedRows = this.removeMatrix(nextNode.number);
     nextNode.fail = this.checkFail(deletedRows);
     return nextNode;
@@ -213,7 +214,7 @@ export class Matrix {
   checkFail(deletedRows) {
     for (let i = 0; i = deletedRows.length < 0; i++) {
       let {number} = deletedRows[i];
-      let start = number - number%9, end = start + 9;
+      let start = number - number % 9, end = start + 9;
       let fail = true;
       for (let j = start; j < end; j++) {
         if (!this.matrix[j].isDeleted) {
@@ -222,7 +223,7 @@ export class Matrix {
         }
       }
       if (fail) {
-        this.addLogs(`Failed Attempt: The cell r${number.row}c${number.column} can not be filled with any numbers.`)
+        this.addLogs(`Failed Attempt: The cell r${number.row}c${number.column} can not be filled with any numbers.`);
         return true;
       }
     }
@@ -251,39 +252,39 @@ export const generateMatrix = function() {
   let matrix = new Array(729).fill(0).map((val, idx) =>
       ({
         number: Number.convertRowNumberToNumber(idx),
-        cells: new Array(81).fill(0),
+        cells: new Array(324).fill(0),
       }));
   // Cell Constraints: One Row, one column can only have one number.
   for (let i = 0; i < matrix.length; i++) {
     let column = Math.floor(i / 9);
     matrix[i].cells[column] = 1;
   }
-  // // Row Constraints: there is only one number of 1-9 in a row.
-  // for (let j = 0; j < 729; j++){
-  //     let x = j%9;
-  //     let y = Math.floor(j/81);
-  //     matrix[j].cells[x + 81 + y*9] = 1;
-  // }
+  // Row Constraints: there is only one number of 1-9 in a row.
+  for (let j = 0; j < 729; j++) {
+    let x = j % 9;
+    let y = Math.floor(j / 81);
+    matrix[j].cells[x + 81 + y * 9] = 1;
+  }
 
   // Column Constraints: there is only one number of 1-9 in a column.
-  // for (let j = 0; j < 729; j++){
-  //     let x = j%81;
-  //     matrix[j].cells[x+162] = 1;
-  // }
+  for (let j = 0; j < 729; j++) {
+    let x = j % 81;
+    matrix[j].cells[x + 162] = 1;
+  }
 
-  // // Block Constraints: there is only one number of 1-9 in a block.
-  // for (let j = 0; j < 729; j++){
-  //     let a = j%9;
-  //     let b = Math.floor(j/27%3);
-  //     let c = Math.floor(j/243);
-  //     matrix[j].cells[a + 243 + 9*(b + (3*c))] = 1;
-  // }
-  //
-  // // Hyper-Block Constraints: there is only one number of 1-9 in a Hyper-Block.
-  // for (let j = 10; j < 13; j++){
-  //   let a = j%9;
-  //
-  // }
+  // Block Constraints: there is only one number of 1-9 in a block.
+  for (let j = 0; j < 729; j++) {
+    let a = j % 9;
+    let b = Math.floor(j / 27 % 3);
+    let c = Math.floor(j / 243);
+    matrix[j].cells[a + 243 + 9 * (b + (3 * c))] = 1;
+  }
+
+  // Hyper-Block Constraints: there is only one number of 1-9 in a Hyper-Block.
+  for (let j = 10; j < 13; j++) {
+    let a = j % 9;
+
+  }
 
   // TODO add more constraints.
   return matrix;
