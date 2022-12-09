@@ -41,6 +41,9 @@
     color: #ffffff;
     justify-content: center;
 }
+.link a{
+    color: #ffffff;
+}
 
 .content {
     flex: 1;
