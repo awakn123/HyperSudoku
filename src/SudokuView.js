@@ -7,7 +7,7 @@ import GithubLogo from './GithubLogo.png';
 
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
-  const {data, next} = sudokuData;
+  const {data, logs, next} = sudokuData;
   const sudokuTable = () => {
     const row = [];
     const table = [];
@@ -51,13 +51,13 @@ const SudokuView = () => {
             </div>
 
             <div class="logs">
-              {next()}
+              {logs}
             </div>
           </div>
 
           <div class="column right">
             <div class="matrix">
-              {Matrix()}
+              <Matrix/>
             </div>
           </div>
         </div>
