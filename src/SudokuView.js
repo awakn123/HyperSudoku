@@ -61,7 +61,7 @@ const SudokuView = () => {
 
           <div className="column right">
             <div className="matrix">
-              <Matrix/>
+              {/*<Matrix/>*/}
             </div>
           </div>
         </div>
