@@ -28,13 +28,18 @@ const SudokuView = () => {
             </div>
 
           <div class="title">
-            Hyper Sudoku Solver
+            <p>Hyper Sudoku Solver</p>
+          </div>
+
+          <div class="gitlogo">
+            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
+              <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
+            </a>
           </div>
 
           <div class="link">
             <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
-              Github Page
+              <p>Github</p>
             </a>
           </div> 
         </div>
@@ -46,26 +51,25 @@ const SudokuView = () => {
             </div>
 
             <div class="logs">
-              {next}
+              {next()}
             </div>
           </div>
 
           <div class="column right">
             <div class="matrix">
-              {Matrix}
+              {Matrix()}
             </div>
           </div>
         </div>
       
         <div class="footer">
           <div class="buttons">
-            <button>New Sudoku</button>
             <button>Start</button>
-            <button>Stop</button>
+            <button>Next</button>
           </div>
           
-          <div class="copyright">
-            copyright
+          <div class="author">
+            <p>Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao</p>
           </div>
         </div> 
       </div>      

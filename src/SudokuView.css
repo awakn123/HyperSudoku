@@ -4,7 +4,7 @@
 }
 
 .sudoku-view {
-    overflow: hidden;
+    overflow: auto;
     width: 100%;
     height: 100vh;
     display: flex;
@@ -14,25 +14,36 @@
 .header {
     height: 60px;
     display: flex;
-    background-color: #d3d3d3;
-    border-bottom: 1px solid #808080;
+    background-color: #282c34;
+    justify-content: center;
 }
 
 .logo {
-    flex: 1;
+    flex: 2;
+    margin-left: 50px;
+    justify-content: center;
 }
 
 .title {
     flex: 10;
-    margin: auto;
+    font-size: 25px;
+    color: #ffffff;
+    justify-content: center;
+}
+
+.gitlogo {
+    flex: 1;
+    justify-content: center;
 }
 
 .link {
-    text-align: right;
-    margin: auto;
-    margin-right: 20px;
-    font-size: 20px;
     flex: 10;
+    text-align: right;
+    align-self: center;
+    margin-right: 50px;
+    font-size: 20px;
+    color: #ffffff;
+    justify-content: center;
 }
 
 .content {
@@ -45,13 +56,13 @@
     flex: 4;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
+    border-right: 1px solid #D3D3D3;
 }
 
 .sudoku {
     flex: 5;
     margin: 10px;
-    border: 1px solid black;
+    border-bottom: 1px solid #D3D3D3;
 }
 
 table {
@@ -85,13 +96,13 @@ table tr td{
 
 .logs {
     flex: 2;
-    border: 1px solid black;
 }
 
 .column.right {
     flex: 6;
     display: flex;
     flex-direction: column;
+    margin: 10px;
 }
 
 .matrix {
@@ -102,15 +113,16 @@ table tr td{
 .footer {
     height: 60px;
     display: flex;
-    background-color: #d3d3d3;
-    border: 1px solid black;
+    background-color: #282c34;
+    color: #ffffff;
 }
 
 .buttons {
     flex: 4;
+    margin: 10px;
 }
 
-.copyright {
+.author {
     flex: 6;
     text-align: right;
     margin: auto;
