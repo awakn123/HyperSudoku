@@ -54,6 +54,14 @@ const SudokuView = () => {
               </table>
             </div>
 
+            <div className="buttons">
+              <button>Start</button>
+              <button>Next</button>
+              <button>Pause</button>
+              <button>Skip To Start</button>
+              <button>Skip To End</button>
+            </div>
+
             <div className="logs">
               {logs}
             </div>
@@ -67,13 +75,10 @@ const SudokuView = () => {
         </div>
       
         <div className="footer">
-          <div className="buttons">
-            <button>Start</button>
-            <button>Next</button>
-          </div>
-          
-          <div className="author">
-            <p>Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao</p>
+          <div >
+            <p className="course">CS5800 Final Project</p>
+            <p className="semester">2022 Fall Semester</p>
+            <p className="author">Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao</p>
           </div>
         </div> 
       </div>      
