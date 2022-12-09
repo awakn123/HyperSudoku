@@ -48,6 +48,10 @@ const SudokuProvider = ({ children }) => {
       number = nextNode.number;
       value = number.value;
     }
+    if (number == null) {
+      addLogs("The sudoku fails.");
+      return;
+    }
     console.log(data, number);
     let sudoku = [...data.map(arr => [...arr])];
     sudoku[number.row][number.column] = value;
