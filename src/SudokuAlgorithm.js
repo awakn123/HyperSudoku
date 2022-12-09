@@ -27,6 +27,10 @@ class Number {
     return `r${this.row + 1}c${this.column + 1}#${this.value}[${this.matrixLineNumber}]`
   }
 
+  toStringed() {
+      return `r${this.row + 1}c${this.column + 1}#${this.value}`
+    }
+
   static convertRowNumberToNumber(rowNumber) {
     let row = Math.floor(rowNumber / 81);
     rowNumber %= 81;
