@@ -51,7 +51,7 @@ class Node {
   fail = false;
   failedNumbers = [];
 
-  addLogs = console.log
+  addLogs = console.log;
 
   constructor(runningMatrix, addLogs, parent) {
     this.runningMatrix = runningMatrix;
@@ -138,19 +138,25 @@ class Node {
 export class Matrix {
   matrix;
   runningMatrix;
+  matrixColumnsDesc;
+  runningMatrixColumnsDesc;
   root;
   addLogs = console.log;
 
   constructor(first) {
     if (first instanceof Matrix) {
-      const {matrix, runningMatrix, root, addLogs} = first;
+      const {matrix, runningMatrix, root, addLogs, matrixColumnsDesc, runningMatrixColumnsDesc} = first;
       this.matrix = matrix;
       this.runningMatrix = runningMatrix;
+      this.matrixColumnsDesc = matrixColumnsDesc
+      this.runningMatrixColumnsDesc = runningMatrixColumnsDesc
       this.root = root;
       this.addLogs = addLogs;
     } else if (first instanceof Array) {
       let sudoku = first;
       this.matrix = generateMatrix();
+      this.matrixColumnsDesc = generateMatrixColumnDesc(this.matrix)
+      this.runningMatrixColumnsDesc = generateMatrixColumnDesc(this.matrix)
       this.runningMatrix = generateMatrix();
       this.root = this.initBySudoku(sudoku);
     }
@@ -163,12 +169,14 @@ export class Matrix {
           return;
         }
         this.removeMatrix(new Number(ri, ci, val));
+        new Node(this.runningMatrix, this.addLogs);
       });
     });
     return new Node([...this.runningMatrix], this.addLogs);
   }
 
   removeMatrix(number) {
+    this.addLogs("remove number: " + number)
     const choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
     let deleteRows = [choseRow], deleteCols = [];
     choseRow.cells.forEach((val, idx) => {
@@ -176,6 +184,9 @@ export class Matrix {
       this.runningMatrix = this.runningMatrix.filter((matrixRow) => {
         if (matrixRow.cells[idx] == 0)
           return true;
+        if (number.toStringed() === 'r5c7#7' && matrixRow.number.toStringed() === 'r4c6#7') {
+          console.error({choseRow, matrixRow, col: this.runningMatrixColumnsDesc[idx], });
+        }
         deleteRows.push(matrixRow);
         this.matrix[matrixRow.number.matrixLineNumber].isDeleted = true;
         return false;
@@ -185,7 +196,14 @@ export class Matrix {
     this.runningMatrix = this.runningMatrix.map((matrixRow) => {
       return {...matrixRow, cells: matrixRow.cells.filter((val, idx) => deleteCols.indexOf(idx) < 0)};
     });
-    this.addLogs(`${deleteCols.length} columns in matrix are deleted.`);
+    let deletedColumnDesc = this.runningMatrixColumnsDesc.filter((val, idx)=> deleteCols.indexOf(idx) >= 0);
+    this.runningMatrixColumnsDesc = this.runningMatrixColumnsDesc.filter((val, idx)=> deleteCols.indexOf(idx) < 0);
+    this.matrixColumnsDesc.forEach((col) => {
+      if (deletedColumnDesc.some((del) => del.index === col.index)) {
+        col.isDeleted = true
+      }
+    })
+    this.addLogs(`${deleteCols.length} columns in matrix(${deletedColumnDesc.join()}) are deleted.`);
     this.addLogs(`${deleteRows.length} rows in matrix(${deleteRows.map(({number}) => number).join()}) are deleted.`);
     return deleteRows;
   }
@@ -345,4 +363,40 @@ export const generateMatrix = function() {
     matrix[j].cells[a + 324 + 27] = 1;
   }
   return matrix;
+};
+
+class ColumnDesc {
+  desc;
+  constraintNumbers;
+  index;
+  isDeleted;
+
+  constructor(matrix, i, desc) {
+    this.index = i;
+    this.constraintNumbers = matrix.filter((row) => row.cells[i] == 1).map((row) => row.number);
+    this.desc = desc;
+  }
+
+  toString() {
+    return `${this.desc}[${this.index}]`
+  }
+}
+
+const generateMatrixColumnDesc = (matrix) => {
+  let result = new Array(324 + 36);
+  for (let i = 0; i < result.length; i++) {
+    let desc;
+    if (i < 81)
+      desc = 'cell constraints';
+    else if (i < 162)
+      desc = 'row constraints';
+    else if (i < 243)
+      desc = 'column constraints';
+    else if (i < 324)
+      desc = 'box constraints';
+    else
+      desc = 'hyper constraints';
+    result[i] = new ColumnDesc(matrix, i, desc);
+  }
+  return result;
 };

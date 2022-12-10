@@ -5,12 +5,15 @@ import Entrance from './Entrance';
 import Solution from './Solution';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
+import SolutionMatrix from './SolutionMatrix';
 
 const router = createBrowserRouter([
   {
     path: '/', element: <Entrance/>,
   }, {
     path: 'solution', element: <Solution />,
+  }, {
+    path: 'matrix', element: <SolutionMatrix />,
   }]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
