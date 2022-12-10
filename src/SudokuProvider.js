@@ -72,6 +72,7 @@ const SudokuProvider = ({ children }) => {
             next,
             matrix,
             logs,
+            node,
           }}
       >
         {children}
