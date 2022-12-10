@@ -34,6 +34,7 @@ const SudokuProvider = ({ children }) => {
   const [matrix, setMatrix] = useState(initialMatrix)
   const [node, setNode] = useState(matrix.root);
   const [fail, setFail] = useState(false);
+  const [delay, setDelay] = useState(null);
 
   const next = () => {
     if (fail || matrix.checkSuccess()) {
@@ -70,18 +71,37 @@ const SudokuProvider = ({ children }) => {
     console.log(sudoku, logs);
   }
 
-  // useInterval(() => {
-  //   next();
-  // }, 1000);
+  const start = () => {
+    setDelay(1000);
+  }
+  const pause = () => {
+    setDelay(null)
+  }
+  const skipToStart = () => {
+    const matrix = new Matrix(initialSudoku);
+    matrix.addLogs = this.addLogs;
+    setData(initialSudoku);
+    setMatrix(matrix)
+    setNode(matrix.root)
+    setFail(false);
+    setDelay(null);
+  }
+
+  useInterval(() => {
+    next();
+  }, delay);
 
   return (
       <SudokuContext.Provider
           value={{
             data,
-            next,
             matrix,
             logs,
             node,
+            next,
+            start,
+            pause,
+            skipToStart,
           }}
       >
         {children}
