@@ -251,6 +251,7 @@ export const generateMatrix = function() {
   }
 
   // Hyper-Block Constraints: there is only one number of 1-9 in a Hyper-Block.
+  // Takes 36 Columns
 
   // First Hyper-Block
   for (let j = 90; j < 117; j++){
