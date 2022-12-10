@@ -27,7 +27,7 @@ const initialMatrix = new Matrix(initialSudoku);
 const SudokuProvider = ({ children }) => {
   const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
-    setLogs([...logs, ...newLogs]);
+    setLogs((prevLogs) => [...prevLogs, ...newLogs]);
   }
   initialMatrix.addLogs = addLogs;
   const [data, setData] = useState(initialSudoku)
@@ -48,13 +48,17 @@ const SudokuProvider = ({ children }) => {
       number = nextNode.number;
       value = number.value;
     }
-    console.log(data, number);
+    if (number == null) {
+      addLogs("The sudoku fails.");
+      return;
+    }
+    console.log(data, number, node);
     let sudoku = [...data.map(arr => [...arr])];
     sudoku[number.row][number.column] = value;
     setData(sudoku);
     setMatrix(Matrix.copyMatrix(matrix));
     setNode(nextNode);
-    console.log(sudoku);
+    console.log(sudoku, logs);
   }
 
   useInterval(() => {
@@ -67,6 +71,8 @@ const SudokuProvider = ({ children }) => {
             data,
             next,
             matrix,
+            logs,
+            node,
           }}
       >
         {children}
