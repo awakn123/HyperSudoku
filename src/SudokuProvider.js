@@ -79,12 +79,13 @@ const SudokuProvider = ({ children }) => {
   }
   const skipToStart = () => {
     const matrix = new Matrix(initialSudoku);
-    matrix.addLogs = this.addLogs;
+    matrix.addLogs = addLogs;
     setData(initialSudoku);
     setMatrix(matrix)
     setNode(matrix.root)
     setFail(false);
     setDelay(null);
+    setLogs([])
   }
 
   useInterval(() => {
