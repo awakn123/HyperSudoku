@@ -316,9 +316,5 @@ export const generateMatrix = function() {
     matrix[j].cells[x + 324+27] = 1;
   }
 
-
-
-
-  // TODO add more constraints.
   return matrix;
 };
