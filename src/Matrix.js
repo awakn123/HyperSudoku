@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {SudokuContext} from './SudokuProvider';
 import './Matrix.css';
 
 const Matrix = () => {
   const sudokuData = useContext(SudokuContext);
   const {matrix} = sudokuData;
+  const [cell, setCell] = useState(null);
   const createTr2 = () => {
     let array = [];
     array.push(<td width="56px" key={"test"}></td>);
@@ -50,14 +51,17 @@ const Matrix = () => {
       return (
           <tr key={'tr' + idx} className={row.isDeleted ? 'deletedRow' : ''}>
             <td width="56px">{row.number.toStringed()}</td>
-            {row.cells.map((val, cellIdx) => (
-                <td key={'td' + idx + cellIdx}
-                    className={matrix.matrixColumnsDesc[cellIdx].isDeleted ? 'deletedRow' : ''}
-                    style={cellIdx == 114 ? {background: 'yellow'} : {}}
-                >
-                  {val}
-                </td>
-            ))}
+            {row.cells.map((val, cellIdx) => {
+              let selected = cell && (cell && cell.number == row.number || cell.col == cellIdx);
+              return (
+                  <td key={'td' + idx + cellIdx}
+                      className={val == 1 ? 'one cp' : selected ? 'selected cp' : matrix.matrixColumnsDesc[cellIdx].isDeleted ? 'deletedRow cp' : 'cp'}
+                      onClick={()=>setCell({number: row.number, col: cellIdx})}
+                  >
+                    {val}
+                  </td>
+              )
+            })}
           </tr>
       );
     });
@@ -73,7 +77,7 @@ const Matrix = () => {
               <td colSpan={81}>row constraints (only one of 1-9 in each of 9 rows)</td>
               <td colSpan={81}>column constraints (only one of 1-9 in each of 9 columns</td>
               <td colSpan={81}>block constraints (only one of 1-9 in each of 9 block</td>
-              <td colSpan={36}>hyper constraints(only one of 1-9 in each of 4 clock)</td>
+              <td colSpan={36}>hyper constraints(only one of 1-9 in each of 4 block)</td>
             </tr>
             {createTr2()}
             {createTr3()}
