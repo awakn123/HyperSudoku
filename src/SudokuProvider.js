@@ -33,23 +33,33 @@ const SudokuProvider = ({ children }) => {
   const [data, setData] = useState(initialSudoku)
   const [matrix, setMatrix] = useState(initialMatrix)
   const [node, setNode] = useState(matrix.root);
+  const [fail, setFail] = useState(false);
+  const [delay, setDelay] = useState(null);
 
   const next = () => {
-    if (matrix.checkSuccess()) {
+    if (fail || matrix.checkSuccess()) {
+      addLogs("The sudoku is completed successfully.");
       return true;
     }
     let {number} = node, value = 0, nextNode;
     if (node.checkFail()) {
+      console.log("fail", node, matrix.runningMatrixColumnsDesc[node.matrixCol]);
       nextNode = node.revert();
       matrix.revert(node);
     } else {
+      console.log("choose");
       nextNode = matrix.chooseNumber(node);
+      if (nextNode.number == null) {
+        matrix.revert(node);
+        return;
+      }
       setNode(nextNode);
       number = nextNode.number;
       value = number.value;
     }
     if (number == null) {
       addLogs("The sudoku fails.");
+      setFail(true)
       return;
     }
     console.log(data, number, node);
@@ -61,18 +71,38 @@ const SudokuProvider = ({ children }) => {
     console.log(sudoku, logs);
   }
 
+  const start = () => {
+    setDelay(1000);
+  }
+  const pause = () => {
+    setDelay(null)
+  }
+  const skipToStart = () => {
+    const matrix = new Matrix(initialSudoku);
+    matrix.addLogs = addLogs;
+    setData(initialSudoku);
+    setMatrix(matrix)
+    setNode(matrix.root)
+    setFail(false);
+    setDelay(null);
+    setLogs([])
+  }
+
   useInterval(() => {
     next();
-  }, 1000);
+  }, delay);
 
   return (
       <SudokuContext.Provider
           value={{
             data,
-            next,
             matrix,
             logs,
             node,
+            next,
+            start,
+            pause,
+            skipToStart,
           }}
       >
         {children}

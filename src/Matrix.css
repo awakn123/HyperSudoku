@@ -1,0 +1,17 @@
+.deletedRow {
+    background: #D3D3D3;
+    color: #282c34;
+}
+
+.selected {
+    background: #A5F1E9;
+    color: #8f8f8f;
+}
+.one {
+    background: #f3f024;
+    color: #163a0e;
+}
+
+.cp {
+    cursor: pointer;
+}
