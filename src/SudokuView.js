@@ -56,7 +56,7 @@ const SudokuView = () => {
 
             <div className="buttons">
               <button>Start</button>
-              <button>Next</button>
+              <button onClick={next}>Next</button>
               <button>Pause</button>
               <button>Skip To Start</button>
               <button>Skip To End</button>

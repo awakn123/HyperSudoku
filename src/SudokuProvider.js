@@ -40,9 +40,11 @@ const SudokuProvider = ({ children }) => {
     }
     let {number} = node, value = 0, nextNode;
     if (node.checkFail()) {
+      console.log("fail", node, matrix);
       nextNode = node.revert();
       matrix.revert(node);
     } else {
+      console.log("choose");
       nextNode = matrix.chooseNumber(node);
       setNode(nextNode);
       number = nextNode.number;
@@ -61,9 +63,9 @@ const SudokuProvider = ({ children }) => {
     console.log(sudoku, logs);
   }
 
-  useInterval(() => {
-    next();
-  }, 1000);
+  // useInterval(() => {
+  //   next();
+  // }, 1000);
 
   return (
       <SudokuContext.Provider
