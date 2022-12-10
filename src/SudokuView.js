@@ -13,7 +13,7 @@ const SudokuView = () => {
     for (let i = 0; i < 9; i++) {
       const row = [];
       for (let j = 0; j < 9; j++) {
-        row.push(<td key={`td_${i}${j}`}>{data[i][j]}</td>);
+        row.push(<td key={`td_${i}${j}`}>{data[i][j] === 0 ? '':data[i][j]}</td>);
       }
       table.push(<tr key={`tr_${i}`}>{row}</tr>);
     }

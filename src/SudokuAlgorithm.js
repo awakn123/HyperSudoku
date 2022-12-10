@@ -1,5 +1,5 @@
 export const initialSudoku = [
-  [0, 0, 0, 0, 2, 8, 0, 0, 6],
+  [0, 0, 0, 2, 8, 0, 0, 0, 6],
   [2, 9, 0, 0, 0, 0, 4, 5, 0],
   [4, 0, 6, 0, 9, 0, 0, 0, 0],
   [0, 0, 2, 1, 0, 0, 9, 0, 0],
@@ -184,9 +184,6 @@ export class Matrix {
       this.runningMatrix = this.runningMatrix.filter((matrixRow) => {
         if (matrixRow.cells[idx] == 0)
           return true;
-        if (number.toStringed() === 'r5c7#7' && matrixRow.number.toStringed() === 'r4c6#7') {
-          console.error({choseRow, matrixRow, col: this.runningMatrixColumnsDesc[idx], });
-        }
         deleteRows.push(matrixRow);
         this.matrix[matrixRow.number.matrixLineNumber].isDeleted = true;
         return false;
@@ -210,6 +207,10 @@ export class Matrix {
 
   chooseNumber(node) {
     let nextNode = node.number ? new Node(this.runningMatrix, this.addLogs, node) : node;
+    if (nextNode.checkFail()) {
+      this.addLogs("Cannot find next number.");
+      return nextNode;
+    }
     nextNode.chooseNumber();
     this.addLogs(`${nextNode.number} is chosen.`);
     const deletedRows = this.removeMatrix(nextNode.number);
@@ -228,7 +229,7 @@ export class Matrix {
    * @returns {boolean}
    */
   checkFail(deletedRows) {
-    for (let i = 0; i = deletedRows.length < 0; i++) {
+    for (let i = 0; i < deletedRows.length; i++) {
       let {number} = deletedRows[i];
       let start = number - number % 9, end = start + 9;
       let fail = true;
@@ -332,33 +333,33 @@ export const generateMatrix = function() {
   }
 
   // Third Hyper-Block
-  for (let j = 90 + 81; j < 117 + 81; j++) {
+  for (let j = 414; j < 414 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 18] = 1;
   }
 
-  for (let j = 171 + 81; j < 198 + 81; j++) {
+  for (let j = 414 + 81; j < 414 + 81 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 18] = 1;
   }
 
-  for (let j = 252 + 81; j < 279 + 81; j++) {
+  for (let j = 414 + 162; j < 414 + 162 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 18] = 1;
   }
 
   // Fourth Hyper-Block
-  for (let j = 126 + 81; j < 153 + 81; j++) {
+  for (let j = 450; j < 450 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 27] = 1;
   }
 
-  for (let j = 207 + 81; j < 234 + 81; j++) {
+  for (let j = 450 + 81; j < 450 + 81 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 27] = 1;
   }
 
-  for (let j = 288 + 81; j < 315 + 81; j++) {
+  for (let j = 450 + 162; j < 450 + 162 + 27; j++) {
     let a = j % 9;
     matrix[j].cells[a + 324 + 27] = 1;
   }
