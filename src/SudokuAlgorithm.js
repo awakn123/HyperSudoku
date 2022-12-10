@@ -222,7 +222,7 @@ export const generateMatrix = function() {
   let matrix = new Array(729).fill(0).map((val, idx) =>
       ({
         number: Number.convertRowNumberToNumber(idx),
-        cells: new Array(81).fill(0),
+        cells: new Array(324+36).fill(0),
       }));
   // Cell Constraints: One Row, one column can only have one number.
   for (let i = 0; i < matrix.length; i++) {
@@ -243,18 +243,81 @@ export const generateMatrix = function() {
   }
 
   // Block Constraints: there is only one number of 1-9 in a block.
-  for (let j = 0; j < 729; i++){
-      let a = j%9；
+  for (let j = 0; j < 729; j++){
+      let a = j%9;
       let b = Math.floor(j/27%3);
       let c = Math.floor(j/243);
       matrix[j].cells[a + 243 + 9*(b + (3*c))] = 1;
   }
 
   // Hyper-Block Constraints: there is only one number of 1-9 in a Hyper-Block.
-  for (let j = 10; j < 13; j++){
-    let a = j%9;
 
+  // First Hyper-Block
+  for (let j = 90; j < 117; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324] = 1;
   }
+
+  for (let j = 171; j < 198; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324] = 1;
+  }
+
+  for (let j = 252; j < 279; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324] = 1;
+  }
+
+  // Second Hyper-Block
+  for (let j = 126; j < 153; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+9] = 1;
+  }
+
+  for (let j = 207; j < 234; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+9] = 1;
+  }
+
+  for (let j = 288; j < 315; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+9] = 1;
+  }
+
+  // Third Hyper-Block
+  for (let j = 90+81; j < 117+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+18] = 1;
+  }
+
+  for (let j = 171+81; j < 198+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+18] = 1;
+  }
+
+  for (let j = 252+81; j < 279+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+18] = 1;
+  }
+
+  // Fourth Hyper-Block
+  for (let j = 126+81; j < 153+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+27] = 1;
+  }
+
+  for (let j = 207+81; j < 234+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+27] = 1;
+  }
+
+  for (let j = 288+81; j < 315+81; j++){
+    let a = j%9;
+    matrix[j].cells[x + 324+27] = 1;
+  }
+
+
+
 
   // TODO add more constraints.
   return matrix;
