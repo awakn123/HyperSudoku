@@ -287,66 +287,65 @@ export const generateMatrix = function() {
   // First Hyper-Block
   for (let j = 90; j < 117; j++){
     let a = j%9;
-    matrix[j].cells[x + 324] = 1;
+    matrix[j].cells[a + 324] = 1;
   }
 
   for (let j = 171; j < 198; j++){
     let a = j%9;
-    matrix[j].cells[x + 324] = 1;
+    matrix[j].cells[a + 324] = 1;
   }
 
   for (let j = 252; j < 279; j++){
     let a = j%9;
-    matrix[j].cells[x + 324] = 1;
+    matrix[j].cells[a + 324] = 1;
   }
 
   // Second Hyper-Block
   for (let j = 126; j < 153; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+9] = 1;
+    matrix[j].cells[a + 324+9] = 1;
   }
 
   for (let j = 207; j < 234; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+9] = 1;
+    matrix[j].cells[a + 324+9] = 1;
   }
 
   for (let j = 288; j < 315; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+9] = 1;
+    matrix[j].cells[a + 324+9] = 1;
   }
 
   // Third Hyper-Block
   for (let j = 90+81; j < 117+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+18] = 1;
+    matrix[j].cells[a + 324+18] = 1;
   }
 
   for (let j = 171+81; j < 198+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+18] = 1;
+    matrix[j].cells[a + 324+18] = 1;
   }
 
   for (let j = 252+81; j < 279+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+18] = 1;
+    matrix[j].cells[a + 324+18] = 1;
   }
 
   // Fourth Hyper-Block
   for (let j = 126+81; j < 153+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+27] = 1;
+    matrix[j].cells[a + 324+27] = 1;
   }
 
   for (let j = 207+81; j < 234+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+27] = 1;
+    matrix[j].cells[a + 324+27] = 1;
   }
 
   for (let j = 288+81; j < 315+81; j++){
     let a = j%9;
-    matrix[j].cells[x + 324+27] = 1;
+    matrix[j].cells[a + 324+27] = 1;
   }
-  // TODO add more constraints.
   return matrix;
 };
