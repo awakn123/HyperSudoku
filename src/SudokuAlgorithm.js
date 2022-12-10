@@ -1,6 +1,6 @@
 export const initialSudoku = [
   [0, 0, 0, 2, 8, 0, 0, 0, 6],
-  [2, 9, 0, 0, 0, 0, 4, 5, 0],
+  [2, 9, 0, 0, 0, 4, 5, 0, 0],
   [4, 0, 6, 0, 9, 0, 0, 0, 0],
   [0, 0, 2, 1, 0, 0, 9, 0, 0],
   [0, 3, 0, 9, 0, 0, 7, 0, 0],
@@ -177,7 +177,8 @@ export class Matrix {
 
   removeMatrix(number) {
     this.addLogs("remove number: " + number)
-    const choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
+    let choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
+    this.matrix[number.matrixLineNumber].isChosen = true;
     let deleteRows = [choseRow], deleteCols = [];
     choseRow.cells.forEach((val, idx) => {
       if (val == 0) return;
@@ -230,17 +231,17 @@ export class Matrix {
    */
   checkFail(deletedRows) {
     for (let i = 0; i < deletedRows.length; i++) {
-      let {number} = deletedRows[i];
-      let start = number - number % 9, end = start + 9;
+      let {number, number: {matrixLineNumber}} = deletedRows[i];
+      let start = matrixLineNumber - matrixLineNumber % 9, end = start + 9;
       let fail = true;
       for (let j = start; j < end; j++) {
-        if (!this.matrix[j].isDeleted) {
+        if (!this.matrix[j].isDeleted || this.matrix[j].isChosen) {
           fail = false;
           break;
         }
       }
       if (fail) {
-        this.addLogs(`Failed Attempt: The cell r${number.row}c${number.column} can not be filled with any numbers.`);
+        this.addLogs(`Failed Attempt: The cell r${number.row + 1}c${number.column + 1} can not be filled with any numbers.`);
         return true;
       }
     }

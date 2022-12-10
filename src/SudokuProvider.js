@@ -37,6 +37,7 @@ const SudokuProvider = ({ children }) => {
 
   const next = () => {
     if (fail || matrix.checkSuccess()) {
+      addLogs("The sudoku is completed successfully.");
       return true;
     }
     let {number} = node, value = 0, nextNode;
