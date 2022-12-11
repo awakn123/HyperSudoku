@@ -1,6 +1,9 @@
 import React, {useContext, useState} from 'react';
 import {SudokuContext} from './SudokuProvider';
 import './Matrix.css';
+import './SudokuView.css'
+import logo from './logo.png';
+import GithubLogo from './GithubLogo.png';
 
 const Matrix = () => {
   const sudokuData = useContext(SudokuContext);
@@ -68,24 +71,66 @@ const Matrix = () => {
   };
 
   return (
-      <div>
-        <table border="1">
-          <tbody>
-            <tr>
-              <td width="56px">{}</td>
-              <td colSpan={81}>cell constraints (only one of value in each of 81 cells)</td>
-              <td colSpan={81}>row constraints (only one of 1-9 in each of 9 rows)</td>
-              <td colSpan={81}>column constraints (only one of 1-9 in each of 9 columns</td>
-              <td colSpan={81}>block constraints (only one of 1-9 in each of 9 block</td>
-              <td colSpan={36}>hyper constraints(only one of 1-9 in each of 4 block)</td>
-            </tr>
-            {createTr2()}
-            {createTr3()}
-            {createTr4()}
-          </tbody>
+      <div class="matrix-page">
+        <div className="header">
+          <div className="logo">
+            <img src={logo} alt="NEU logo" height="60px" width="60px"/>
+          </div>
 
-        </table>
+          <div className="title">
+            Hyper Sudoku Matrix
+          </div>
+
+          <div className="placeholder"></div>
+
+          <div className="gitlogo">
+            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
+              <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
+            </a>
+          </div>
+
+          <div className="gitlink">
+            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
+              Project Page on Github
+            </a>
+          </div>
+        </div>
+
+        <div class="content matrix-area">
+          <table border="1">
+            <tbody>
+              <tr>
+                <td width="56px">{}</td>
+                <td colSpan={81}>cell constraints (only one of value in each of 81 cells)</td>
+                <td colSpan={81}>row constraints (only one of 1-9 in each of 9 rows)</td>
+                <td colSpan={81}>column constraints (only one of 1-9 in each of 9 columns</td>
+                <td colSpan={81}>block constraints (only one of 1-9 in each of 9 block</td>
+                <td colSpan={36}>hyper constraints(only one of 1-9 in each of 4 block)</td>
+              </tr>
+              {createTr2()}
+              {createTr3()}
+              {createTr4()}
+            </tbody>
+          </table>
+        </div>
+      
+        <div className="footer">
+          <div className="course">
+            CS5800 Final Project
+          </div>
+          
+          <div className="semester">
+            2022 Fall Semester
+          </div>
+
+          <div className="placeholder"></div>
+
+          <div className="author">
+            Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao
+          </div>
+        </div>
       </div>
+      
   );
 };
 

@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+.placeholder {
+    flex: 1 1 auto;
+}
+
 .sudoku-view {
     display: flex;
     flex-direction: column;
@@ -12,9 +16,40 @@
 }
 
 .header {
-    flex: 0 0 60px;
+    flex: 0 0 65px;
     display: flex;
     background-color: #282c34;
+    color: #ffffff;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    flex: 0 0 60px;
+    margin: 0 20px 0 60px;
+}
+
+.title {
+    flex: 0 0 250px;
+    font-size: 25px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.gitlogo {
+    flex: 0 0 50px;
+    align-self: center;
+}
+
+.gitlink {
+    flex: 0 0 250px;
+    align-self: center;
+    margin-right: 30px;
+    font-size: 20px;
+    color: #ffffff;
+    justify-content: center;
+}
+.gitlink a{
     color: #ffffff;
 }
 
@@ -25,66 +60,25 @@
     background-color: #ffffff;
 }
 
-.footer {
-    flex: 0 0 60px;
-    display: flex;
-    background-color: #282c34;
-    color: #ffffff;
-}
-
 .column.left {
-    flex: 0 0 500px;
-    max-width: 500px;
+    flex: 0 0 600px;
+    max-width: 600px;
     display: flex;
-    flex-direction: column;
-    border-right: 1px solid #D3D3D3;
-}
-
-.column.right {
-    flex: 1 1 auto;
-    overflow: auto;
-}
-
-.logo {
-    flex: 2;
-    margin-left: 50px;
-    align-self: center;
-}
-
-.title {
-    flex: 15;
-    font-size: 25px;
-    color: #ffffff;
-    align-self: center;
-}
-
-.gitlogo {
-    flex: 1;
-    align-self: center;
-}
-
-.link {
-    flex: 2;
-    align-self: center;
-    margin-right: 50px;
-    font-size: 20px;
-    color: #ffffff;
+    align-items: center;
     justify-content: center;
-}
-.link a{
-    color: #ffffff;
 }
 
 .sudoku {
-    flex: 0 0 480px;
+    flex: 0 0 580px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .sudoku table {
-    width: 450px;
-    height: 450px;
+    width: 560px;
+    height: 560px;
+    font-size: 30px;
     border: 2px solid black;
     border-collapse: separate;
     border-spacing: 0;
@@ -123,40 +117,92 @@ table tr td{
     background-color: #A5F1E9;
 }
 
+.column.middle {
+    flex: 0 0 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #D3D3D3;
+    margin-right: 20px;
+}
 
 .buttons {
-    flex: 0 0 60px;
-    padding: 10px;
-    border-bottom: 1px solid #D3D3D3;
+    flex: 0 0 400px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
 }
 
 button {
-    width: 80px;
-    height: 40px; 
-    margin: 5px;
-    font-size:15px;
+    width: 120px;
+    height: 120px; 
+    margin: 10px;
+    font-size: 20px;
     font: bold;
 }
 
-
-.logs {
+.Matrix-link {
     flex: 1 1 auto;
-    height: 0;
-    margin: 10px;
-    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-right: 10px;
 }
 
-.matrix {
-    flex: 1;
+.Matrix-link a {
+    color: black;
+    font-size: 25px;
+}
+
+.column.right {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 20px 30px 20px 20px;
+}
+
+.logs-text {
+    flex: 0 0 30px;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.logs {
+    flex: 0 0 auto;
+    max-height: calc(100vh - 240px);
+    overflow: auto;
+    font-size: 20px;
+    word-wrap: break-word;
+}
+
+.footer {
+    flex: 0 0 50px;
+    display: flex;
+    background-color: #282c34;
+    color: #ffffff;
+    align-items: center;
+    justify-content: center;
+}
+
+.course {
+    flex: 0 0 200px;
+    font-size: 20px;
+    margin: 0 30px 0 60px;
+}
+
+.semester {
+    flex: 0 0 200px;
+    font-size: 20px;
 }
 
 .author {
-    flex: 6;
+    flex: 0 0 600px;
     text-align: right;
-    margin: auto 20px auto auto;
+    margin: 0 60px 0 0;
+    font-size: 18px;
 }
 
 @media screen and (max-width: 600px) {
