@@ -32,9 +32,9 @@ const SudokuProvider = ({ children }) => {
   const [data, setData] = useState([])
   const [matrix, setMatrix] = useState(null)
   const [node, setNode] = useState(null);
-  const [fail, setFail] = useState(false);
   const [delay, setDelay] = useState(null);
   const [sudokuArray, setSudokuArray] = useState([]);
+  const [end, setEnd] = useState(false)
 
   useEffect(()=>{
     fetch("/Sudoku.json").then((res) => res.json()).then((res) => {
@@ -44,17 +44,17 @@ const SudokuProvider = ({ children }) => {
 
   useEffect(() => {
     skipToStart()
-  }, [sudokuArray.length])
+  }, [sudokuArray.length, sudokuIndex])
 
   const next = () => {
-    if (fail) {
-      addLogs("Fail to find the solution.");
+    if (end) {
       setDelay(null);
       return true;
     }
     if (matrix.checkSuccess()) {
       addLogs("The sudoku is completed successfully.");
       setDelay(null);
+      setEnd(true)
       return true;
     }
     let {number} = node, value = 0, nextNode;
@@ -73,7 +73,7 @@ const SudokuProvider = ({ children }) => {
     }
     if (number == null) {
       addLogs("The sudoku fails.");
-      setFail(true)
+      setEnd(true)
       return;
     }
     let sudoku = [...data.map(arr => [...arr])];
@@ -95,7 +95,7 @@ const SudokuProvider = ({ children }) => {
     matrix.addLogs = addLogs;
     setMatrix(matrix)
     setNode(matrix.root)
-    setFail(false);
+    setEnd(false);
     setDelay(null);
     setLogs([])
   }
@@ -105,7 +105,21 @@ const SudokuProvider = ({ children }) => {
   }, delay);
 
   const skipToEnd = () => {
-    setDelay(0)
+    setDelay(0);
+  }
+
+  useEffect(()=>{
+    setData((data) => {
+      return Array.isArray(data) ? [...data.map(arr => [...arr])] : data
+    });
+  }, [end])
+
+  const switchToNext = () => {
+    let nextIdx = sudokuIndex + 1;
+    if (nextIdx >= sudokuArray.length) {
+      nextIdx = 0;
+    }
+    setSudokuIndex(nextIdx);
   }
 
   return (
@@ -120,6 +134,7 @@ const SudokuProvider = ({ children }) => {
             pause,
             skipToStart,
             skipToEnd,
+            switchToNext,
           }}
       >
         {children}

@@ -7,7 +7,7 @@ import GithubLogo from './GithubLogo.png';
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {
-    data = [], logs, node, next, start, pause, skipToStart,skipToEnd
+    data = [], logs, node, next, start, pause, skipToStart, skipToEnd, switchToNext,
   } = sudokuData;
   const {number} = node || {};
   const sudokuTable = () => {
@@ -73,6 +73,7 @@ const SudokuView = () => {
               <button onClick={pause}>Pause</button>
               <button onClick={skipToStart}>Skip To Start</button>
               <button onClick={skipToEnd}>Skip To End</button>
+              <button onClick={switchToNext}>Switch To Next Sudoku</button>
             </div>
 
             <div className="Matrix-link">
@@ -101,7 +102,7 @@ const SudokuView = () => {
           <div className="course">
             CS5800 Final Project
           </div>
-          
+
           <div className="semester">
             2022 Fall Semester
           </div>
