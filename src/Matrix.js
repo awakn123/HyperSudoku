@@ -52,6 +52,7 @@ const Matrix = () => {
   const [hide, setHide] = useState(false)
 
   const createTr4 = () => {
+    if (!matrix|| !matrix.matrix) return
     return matrix.matrix.map((row, idx) => {
       if (row.isDeleted && hide) {
         return null;
