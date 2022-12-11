@@ -1,13 +1,14 @@
 import React from 'react';
 import SudokuView from './SudokuView';
 import SudokuProvider from './SudokuProvider';
+import NeuLayout from './NeuLayout';
 
 const Solution = () => {
   return (
       <SudokuProvider>
-        <div className="layout">
+        <NeuLayout>
           <SudokuView />
-        </div>
+        </NeuLayout>
       </SudokuProvider>
   );
 };

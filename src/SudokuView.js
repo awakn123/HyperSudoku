@@ -1,8 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext,useRef,useEffect} from 'react';
 import './SudokuView.css';
 import {SudokuContext} from './SudokuProvider';
-import logo from './logo.png';
-import GithubLogo from './GithubLogo.png';
 
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
@@ -27,31 +25,21 @@ const SudokuView = () => {
     return table;
   };
 
+  const AlwaysScrollToBottom = () => {
+    const elementRef = useRef();
+    useEffect(() => elementRef.current.scrollIntoView());
+    return <div ref={elementRef} />;
+  };
+  
+  const Messages = ({ logs }) => (
+    <ul>
+      {logs.map((log, idx) => <li key={idx}>{log}</li>)}
+      <AlwaysScrollToBottom />
+    </ul>
+  )
+  
   return (
       <div className={'sudoku-view'}>
-        <div className="header">
-          <div className="logo">
-            <img src={logo} alt="NEU logo" height="60px" width="60px"/>
-          </div>
-
-          <div className="title">
-            Hyper Sudoku Solver
-          </div>
-
-          <div className="placeholder"></div>
-
-          <div className="gitlogo">
-            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
-            </a>
-          </div>
-
-          <div className="gitlink">
-            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              Project Page on Github
-            </a>
-          </div>
-        </div>
 
         <div className="content">
           <div className="column left">
@@ -77,7 +65,7 @@ const SudokuView = () => {
             </div>
 
             <div className="Matrix-link">
-              <a href="/matrix" target="_blank" rel="noopener noreferrer">
+              <a href="/matrix" rel="noopener noreferrer">
                 => Hyper Sudoku Matrix
               </a>
             </div>
@@ -91,26 +79,8 @@ const SudokuView = () => {
             </div>
 
             <div className="logs">
-              <ul>
-                {logs.map((log, idx) => <li key={idx}>{log}</li>)}
-              </ul>
+                {Messages({logs})}
             </div>
-          </div>
-        </div>
-
-        <div className="footer">
-          <div className="course">
-            CS5800 Final Project
-          </div>
-
-          <div className="semester">
-            2022 Fall Semester
-          </div>
-
-          <div className="placeholder"></div>
-
-          <div className="author">
-            Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao
           </div>
         </div>
       </div>

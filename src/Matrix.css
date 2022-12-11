@@ -27,3 +27,8 @@
 .matrix-area {
     overflow: auto;
 }
+
+.control-area a {
+    color: black;
+    font-size: 25px;
+}
