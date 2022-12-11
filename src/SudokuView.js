@@ -77,7 +77,7 @@ const SudokuView = () => {
             </div>
 
             <div className="Matrix-link">
-              <a href="/matrix" target="_blank" rel="noopener noreferrer">
+              <a href="/matrix" rel="noopener noreferrer">
                 => Hyper Sudoku Matrix
               </a>
             </div>

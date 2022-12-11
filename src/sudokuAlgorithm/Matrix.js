@@ -42,7 +42,7 @@ export default class Matrix {
   }
 
   removeMatrix(number) {
-    this.addLogs("remove number: " + number)
+    this.addLogs("Remove number: " + number+".")
     let choseRow = this.runningMatrix.find((row) => row.number.matrixLineNumber === number.matrixLineNumber);
     this.matrix[number.matrixLineNumber].isChosen = true;
     let deleteRows = [choseRow], deleteCols = [];

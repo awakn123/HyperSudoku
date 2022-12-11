@@ -2,8 +2,6 @@ import React, {useContext, useState} from 'react';
 import {SudokuContext} from './SudokuProvider';
 import './Matrix.css';
 import './SudokuView.css'
-import logo from './logo.png';
-import GithubLogo from './GithubLogo.png';
 
 const Matrix = () => {
   const sudokuData = useContext(SudokuContext);
@@ -96,9 +94,13 @@ const Matrix = () => {
             </tr>
             </tbody>
           </table>
-          <div>
+          <div className="control-area">
             <button onClick={() => setHide(!hide)} style={{width: "auto", height: "60px"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
+            <a href="/solution" rel="noopener noreferrer">
+                => Hyper Sudoku View
+            </a>
           </div>
+          
           <table border="1">
             <tbody>
               <tr>
