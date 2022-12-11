@@ -49,8 +49,13 @@ const Matrix = () => {
     );
   };
 
+  const [hide, setHide] = useState(false)
+
   const createTr4 = () => {
     return matrix.matrix.map((row, idx) => {
+      if (row.isDeleted && hide) {
+        return null;
+      }
       return (
           <tr key={'tr' + idx} className={row.isDeleted ? 'deletedRow' : ''}>
             <td width="56px">{row.number.toStringed()}</td>
@@ -67,7 +72,7 @@ const Matrix = () => {
             })}
           </tr>
       );
-    });
+    }).filter((tr) => !!tr);
   };
 
   return (
@@ -97,6 +102,25 @@ const Matrix = () => {
         </div>
 
         <div class="content matrix-area">
+          <table>
+            <tbody>
+            <tr>
+              <td>removed columns and rows:</td>
+              <td className="deletedRow" style={{width: 50}}></td>
+            </tr>
+            <tr>
+              <td>selected column and row:</td>
+              <td className="selected" style={{width: 50}}></td>
+            </tr>
+            <tr>
+              <td>cell with 1:</td>
+              <td className="one" style={{width: 50}}></td>
+            </tr>
+            </tbody>
+          </table>
+          <div>
+            <button onClick={() => setHide(!hide)} style={{width: "auto"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
+          </div>
           <table border="1">
             <tbody>
               <tr>
@@ -113,12 +137,12 @@ const Matrix = () => {
             </tbody>
           </table>
         </div>
-      
+
         <div className="footer">
           <div className="course">
             CS5800 Final Project
           </div>
-          
+
           <div className="semester">
             2022 Fall Semester
           </div>
@@ -130,7 +154,7 @@ const Matrix = () => {
           </div>
         </div>
       </div>
-      
+
   );
 };
 

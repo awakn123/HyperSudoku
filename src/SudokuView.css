@@ -91,6 +91,8 @@ table td {
 
 table tr td {
     border-right: 0;
+    min-width: 60px;
+    min-height: 60px;
 }
 
 table tr:last-child td {
@@ -204,6 +206,11 @@ button {
     margin: 0 60px 0 0;
     font-size: 18px;
 }
+
+.curCell {
+    background: #f3f024;
+}
+
 
 @media screen and (max-width: 600px) {
     .content {

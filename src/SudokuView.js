@@ -7,14 +7,20 @@ import GithubLogo from './GithubLogo.png';
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {
-    data, logs, next, start, pause, skipToStart,
+    data = [], initialSudoku = [], logs, node, next, start, pause, skipToStart, skipToEnd, switchToNext,
   } = sudokuData;
+  const {number} = node || {};
   const sudokuTable = () => {
     const table = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < data.length; i++) {
       const row = [];
-      for (let j = 0; j < 9; j++) {
-        row.push(<td key={`td_${i}${j}`}>{data[i][j] === 0 ? '' : data[i][j]}</td>);
+      for (let j = 0; j < data[0].length; j++) {
+        row.push(
+            <td key={`td_${i}${j}`}
+                className={number && number.row === i && number.column === j ? 'curCell' : ''}
+            >
+              {data[i][j] === 0 ? '' : data[i][j]}
+            </td>);
       }
       table.push(<tr key={`tr_${i}`}>{row}</tr>);
     }
@@ -66,7 +72,8 @@ const SudokuView = () => {
               <button onClick={next}>Next</button>
               <button onClick={pause}>Pause</button>
               <button onClick={skipToStart}>Skip To Start</button>
-              <button>Skip To End</button>
+              <button onClick={skipToEnd}>Skip To End</button>
+              <button onClick={switchToNext}>Switch To Next Sudoku</button>
             </div>
 
             <div className="Matrix-link">
@@ -84,7 +91,9 @@ const SudokuView = () => {
             </div>
 
             <div className="logs">
-              {logs}
+              <ul>
+                {logs.map((log, idx) => <li key={idx}>{log}</li>)}
+              </ul>
             </div>
           </div>
         </div>
@@ -93,7 +102,7 @@ const SudokuView = () => {
           <div className="course">
             CS5800 Final Project
           </div>
-          
+
           <div className="semester">
             2022 Fall Semester
           </div>

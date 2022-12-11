@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {initialSudoku, Matrix} from './SudokuAlgorithm'
+import {Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
@@ -22,32 +22,46 @@ function useInterval(callback, delay) {
     }
   }, [delay]);
 }
-const initialMatrix = new Matrix(initialSudoku);
 
 const SudokuProvider = ({ children }) => {
   const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
     setLogs((prevLogs) => [...prevLogs, ...newLogs]);
   }
-  initialMatrix.addLogs = addLogs;
-  const [data, setData] = useState(initialSudoku)
-  const [matrix, setMatrix] = useState(initialMatrix)
-  const [node, setNode] = useState(matrix.root);
-  const [fail, setFail] = useState(false);
+  const [sudokuIndex, setSudokuIndex] = useState(0)
+  const [data, setData] = useState([])
+  const [matrix, setMatrix] = useState(null)
+  const [node, setNode] = useState(null);
   const [delay, setDelay] = useState(null);
+  const [sudokuArray, setSudokuArray] = useState([]);
+  const [end, setEnd] = useState(false)
+
+  useEffect(()=>{
+    fetch("/Sudoku.json").then((res) => res.json()).then((res) => {
+      setSudokuArray(res);
+    })
+  }, [])
+
+  useEffect(() => {
+    skipToStart()
+  }, [sudokuArray.length, sudokuIndex])
 
   const next = () => {
-    if (fail || matrix.checkSuccess()) {
+    if (end) {
+      setDelay(null);
+      return true;
+    }
+    if (matrix.checkSuccess()) {
       addLogs("The sudoku is completed successfully.");
+      setDelay(null);
+      setEnd(true)
       return true;
     }
     let {number} = node, value = 0, nextNode;
     if (node.checkFail()) {
-      console.log("fail", node, matrix.runningMatrixColumnsDesc[node.matrixCol]);
       nextNode = node.revert();
       matrix.revert(node);
     } else {
-      console.log("choose");
       nextNode = matrix.chooseNumber(node);
       if (nextNode.number == null) {
         matrix.revert(node);
@@ -59,16 +73,14 @@ const SudokuProvider = ({ children }) => {
     }
     if (number == null) {
       addLogs("The sudoku fails.");
-      setFail(true)
+      setEnd(true)
       return;
     }
-    console.log(data, number, node);
     let sudoku = [...data.map(arr => [...arr])];
     sudoku[number.row][number.column] = value;
     setData(sudoku);
     setMatrix(Matrix.copyMatrix(matrix));
     setNode(nextNode);
-    console.log(sudoku, logs);
   }
 
   const start = () => {
@@ -78,12 +90,12 @@ const SudokuProvider = ({ children }) => {
     setDelay(null)
   }
   const skipToStart = () => {
-    const matrix = new Matrix(initialSudoku);
+    setData(sudokuArray[sudokuIndex]);
+    const matrix = new Matrix(sudokuArray[sudokuIndex]);
     matrix.addLogs = addLogs;
-    setData(initialSudoku);
     setMatrix(matrix)
     setNode(matrix.root)
-    setFail(false);
+    setEnd(false);
     setDelay(null);
     setLogs([])
   }
@@ -92,10 +104,29 @@ const SudokuProvider = ({ children }) => {
     next();
   }, delay);
 
+  const skipToEnd = () => {
+    setDelay(0);
+  }
+
+  useEffect(()=>{
+    setData((data) => {
+      return Array.isArray(data) ? [...data.map(arr => [...arr])] : data
+    });
+  }, [end])
+
+  const switchToNext = () => {
+    let nextIdx = sudokuIndex + 1;
+    if (nextIdx >= sudokuArray.length) {
+      nextIdx = 0;
+    }
+    setSudokuIndex(nextIdx);
+  }
+
   return (
       <SudokuContext.Provider
           value={{
             data,
+            initialSudoku: sudokuArray[sudokuIndex],
             matrix,
             logs,
             node,
@@ -103,6 +134,8 @@ const SudokuProvider = ({ children }) => {
             start,
             pause,
             skipToStart,
+            skipToEnd,
+            switchToNext,
           }}
       >
         {children}
