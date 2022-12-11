@@ -43,11 +43,9 @@ const SudokuProvider = ({ children }) => {
     }
     let {number} = node, value = 0, nextNode;
     if (node.checkFail()) {
-      console.log("fail", node, matrix.runningMatrixColumnsDesc[node.matrixCol]);
       nextNode = node.revert();
       matrix.revert(node);
     } else {
-      console.log("choose");
       nextNode = matrix.chooseNumber(node);
       if (nextNode.number == null) {
         matrix.revert(node);
@@ -62,13 +60,11 @@ const SudokuProvider = ({ children }) => {
       setFail(true)
       return;
     }
-    console.log(data, number, node);
     let sudoku = [...data.map(arr => [...arr])];
     sudoku[number.row][number.column] = value;
     setData(sudoku);
     setMatrix(Matrix.copyMatrix(matrix));
     setNode(nextNode);
-    console.log(sudoku, logs);
   }
 
   const start = () => {

@@ -205,6 +205,11 @@ button {
     font-size: 18px;
 }
 
+.curCell {
+    background: #f3f024;
+}
+
+
 @media screen and (max-width: 600px) {
     .content {
       flex-direction: column;

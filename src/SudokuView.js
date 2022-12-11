@@ -7,14 +7,21 @@ import GithubLogo from './GithubLogo.png';
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {
-    data, logs, next, start, pause, skipToStart,
+    data, logs, node, next, start, pause, skipToStart,
   } = sudokuData;
+  const {number} = node;
   const sudokuTable = () => {
+    console.log("number", number);
     const table = [];
     for (let i = 0; i < 9; i++) {
       const row = [];
       for (let j = 0; j < 9; j++) {
-        row.push(<td key={`td_${i}${j}`}>{data[i][j] === 0 ? '' : data[i][j]}</td>);
+        row.push(
+            <td key={`td_${i}${j}`}
+                className={number && number.row === i && number.column === j ? 'curCell' : ''}
+            >
+              {data[i][j] === 0 ? '' : data[i][j]}
+            </td>);
       }
       table.push(<tr key={`tr_${i}`}>{row}</tr>);
     }
@@ -84,7 +91,9 @@ const SudokuView = () => {
             </div>
 
             <div className="logs">
-              {logs}
+              <ul>
+                {logs.map((log) => <li>{log}</li>)}
+              </ul>
             </div>
           </div>
         </div>
