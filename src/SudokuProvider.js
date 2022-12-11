@@ -126,6 +126,7 @@ const SudokuProvider = ({ children }) => {
       <SudokuContext.Provider
           value={{
             data,
+            initialSudoku: sudokuArray[sudokuIndex],
             matrix,
             logs,
             node,

@@ -7,7 +7,7 @@ import GithubLogo from './GithubLogo.png';
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {
-    data = [], logs, node, next, start, pause, skipToStart, skipToEnd, switchToNext,
+    data = [], initialSudoku = [], logs, node, next, start, pause, skipToStart, skipToEnd, switchToNext,
   } = sudokuData;
   const {number} = node || {};
   const sudokuTable = () => {
