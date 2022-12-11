@@ -1,8 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext,useRef,useEffect} from 'react';
 import './SudokuView.css';
 import {SudokuContext} from './SudokuProvider';
-import logo from './logo.png';
-import GithubLogo from './GithubLogo.png';
 
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
@@ -27,6 +25,19 @@ const SudokuView = () => {
     return table;
   };
 
+  const AlwaysScrollToBottom = () => {
+    const elementRef = useRef();
+    useEffect(() => elementRef.current.scrollIntoView());
+    return <div ref={elementRef} />;
+  };
+  
+  const Messages = ({ logs }) => (
+    <ul>
+      {logs.map((log, idx) => <li key={idx}>{log}</li>)}
+      <AlwaysScrollToBottom />
+    </ul>
+  )
+  
   return (
       <div className={'sudoku-view'}>
 
@@ -68,9 +79,7 @@ const SudokuView = () => {
             </div>
 
             <div className="logs">
-              <ul>
-                {logs.map((log, idx) => <li key={idx}>{log}</li>)}
-              </ul>
+                {Messages({logs})}
             </div>
           </div>
         </div>
