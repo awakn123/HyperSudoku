@@ -102,7 +102,7 @@ const Matrix = () => {
           </div>
         </div>
 
-        <div class="content matrix-area">
+        <div class="content matrix-area" style={{display: "block"}}>
           <table>
             <tbody>
             <tr>
@@ -120,7 +120,7 @@ const Matrix = () => {
             </tbody>
           </table>
           <div>
-            <button onClick={() => setHide(!hide)} style={{width: "auto"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
+            <button onClick={() => setHide(!hide)} style={{width: "auto", height: "60px"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
           </div>
           <table border="1">
             <tbody>
