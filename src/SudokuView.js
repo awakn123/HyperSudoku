@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import './SudokuView.css';
 import {SudokuContext} from './SudokuProvider';
-import Matrix from './Matrix';
 import logo from './logo.png';
 import GithubLogo from './GithubLogo.png';
 
@@ -30,8 +29,10 @@ const SudokuView = () => {
           </div>
 
           <div className="title">
-            <p>Hyper Sudoku Solver</p>
+            Hyper Sudoku Solver
           </div>
+
+          <div className="placeholder"></div>
 
           <div className="gitlogo">
             <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
@@ -39,9 +40,9 @@ const SudokuView = () => {
             </a>
           </div>
 
-          <div className="link">
+          <div className="gitlink">
             <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              <p>Github</p>
+              Project Page on Github
             </a>
           </div>
         </div>
@@ -55,6 +56,10 @@ const SudokuView = () => {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <div className="column middle">
+            <div className="placeholder"></div>
 
             <div className="buttons">
               <button onClick={start}>Start</button>
@@ -64,23 +69,39 @@ const SudokuView = () => {
               <button>Skip To End</button>
             </div>
 
-            <div className="logs">
-              {logs}
+            <div className="Matrix-link">
+              <a href="/matrix" target="_blank" rel="noopener noreferrer">
+                => Hyper Sudoku Matrix
+              </a>
             </div>
+
+            <div className="placeholder"></div>
           </div>
 
           <div className="column right">
-            <div className="matrix">
-              {/*<Matrix/>*/}
+            <div className="logs-text">
+              Running Logs:
+            </div>
+
+            <div className="logs">
+              {logs}
             </div>
           </div>
         </div>
 
         <div className="footer">
-          <div>
-            <p className="course">CS5800 Final Project</p>
-            <p className="semester">2022 Fall Semester</p>
-            <p className="author">Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao</p>
+          <div className="course">
+            CS5800 Final Project
+          </div>
+          
+          <div className="semester">
+            2022 Fall Semester
+          </div>
+
+          <div className="placeholder"></div>
+
+          <div className="author">
+            Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao
           </div>
         </div>
       </div>
