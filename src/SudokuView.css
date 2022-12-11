@@ -83,6 +83,10 @@
     border-collapse: separate;
     border-spacing: 0;
 }
+.sudoku table td {
+    min-width: 60px;
+    min-height: 60px;
+}
 
 table td {
     border: 1px solid #D3D3D3;
@@ -91,8 +95,6 @@ table td {
 
 table tr td {
     border-right: 0;
-    min-width: 60px;
-    min-height: 60px;
 }
 
 table tr:last-child td {
