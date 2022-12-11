@@ -77,32 +77,9 @@ const Matrix = () => {
   };
 
   return (
-      <div class="matrix-page">
-        <div className="header">
-          <div className="logo">
-            <img src={logo} alt="NEU logo" height="60px" width="60px"/>
-          </div>
 
-          <div className="title">
-            Hyper Sudoku Matrix
-          </div>
 
-          <div className="placeholder"></div>
-
-          <div className="gitlogo">
-            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              <img src={GithubLogo} alt="Git logo" height="30px" width="30px"/>
-            </a>
-          </div>
-
-          <div className="gitlink">
-            <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-              Project Page on Github
-            </a>
-          </div>
-        </div>
-
-        <div class="content matrix-area">
+        <div className="content matrix-area" style={{display: "block"}}>
           <table>
             <tbody>
             <tr>
@@ -120,7 +97,7 @@ const Matrix = () => {
             </tbody>
           </table>
           <div>
-            <button onClick={() => setHide(!hide)} style={{width: "auto"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
+            <button onClick={() => setHide(!hide)} style={{width: "auto", height: "60px"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
           </div>
           <table border="1">
             <tbody>
@@ -139,22 +116,6 @@ const Matrix = () => {
           </table>
         </div>
 
-        <div className="footer">
-          <div className="course">
-            CS5800 Final Project
-          </div>
-
-          <div className="semester">
-            2022 Fall Semester
-          </div>
-
-          <div className="placeholder"></div>
-
-          <div className="author">
-            Author (Alphabetical Order): Liyang Song, Na Yin, Xueyan Feng, Yun Cao
-          </div>
-        </div>
-      </div>
 
   );
 };

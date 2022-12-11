@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Matrix} from './SudokuAlgorithm'
+import Matrix from './sudokuAlgorithm/Matrix'
 
 export const SudokuContext = React.createContext({});
 
