@@ -1,13 +1,14 @@
 import React from 'react';
 import Matrix from './Matrix';
 import SudokuProvider from './SudokuProvider';
+import NeuLayout from './NeuLayout';
 
 const SolutionMatrix = () => {
   return (
       <SudokuProvider>
-        <div className="layout">
+        <NeuLayout>
           <Matrix />
-        </div>
+        </NeuLayout>
       </SudokuProvider>
   );
 };
