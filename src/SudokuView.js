@@ -7,15 +7,14 @@ import GithubLogo from './GithubLogo.png';
 const SudokuView = () => {
   const sudokuData = useContext(SudokuContext);
   const {
-    data, logs, node, next, start, pause, skipToStart,
+    data = [], logs, node, next, start, pause, skipToStart,skipToEnd
   } = sudokuData;
-  const {number} = node;
+  const {number} = node || {};
   const sudokuTable = () => {
-    console.log("number", number);
     const table = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < data.length; i++) {
       const row = [];
-      for (let j = 0; j < 9; j++) {
+      for (let j = 0; j < data[0].length; j++) {
         row.push(
             <td key={`td_${i}${j}`}
                 className={number && number.row === i && number.column === j ? 'curCell' : ''}
@@ -73,7 +72,7 @@ const SudokuView = () => {
               <button onClick={next}>Next</button>
               <button onClick={pause}>Pause</button>
               <button onClick={skipToStart}>Skip To Start</button>
-              <button>Skip To End</button>
+              <button onClick={skipToEnd}>Skip To End</button>
             </div>
 
             <div className="Matrix-link">
@@ -92,7 +91,7 @@ const SudokuView = () => {
 
             <div className="logs">
               <ul>
-                {logs.map((log) => <li>{log}</li>)}
+                {logs.map((log, idx) => <li key={idx}>{log}</li>)}
               </ul>
             </div>
           </div>

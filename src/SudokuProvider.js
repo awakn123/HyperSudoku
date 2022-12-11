@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {initialSudoku, Matrix} from './SudokuAlgorithm'
+import {Matrix} from './SudokuAlgorithm'
 
 export const SudokuContext = React.createContext({});
 
@@ -22,23 +22,39 @@ function useInterval(callback, delay) {
     }
   }, [delay]);
 }
-const initialMatrix = new Matrix(initialSudoku);
 
 const SudokuProvider = ({ children }) => {
   const [logs, setLogs] = useState([])
   const addLogs = (...newLogs) => {
     setLogs((prevLogs) => [...prevLogs, ...newLogs]);
   }
-  initialMatrix.addLogs = addLogs;
-  const [data, setData] = useState(initialSudoku)
-  const [matrix, setMatrix] = useState(initialMatrix)
-  const [node, setNode] = useState(matrix.root);
+  const [sudokuIndex, setSudokuIndex] = useState(0)
+  const [data, setData] = useState([])
+  const [matrix, setMatrix] = useState(null)
+  const [node, setNode] = useState(null);
   const [fail, setFail] = useState(false);
   const [delay, setDelay] = useState(null);
+  const [sudokuArray, setSudokuArray] = useState([]);
+
+  useEffect(()=>{
+    fetch("/Sudoku.json").then((res) => res.json()).then((res) => {
+      setSudokuArray(res);
+    })
+  }, [])
+
+  useEffect(() => {
+    skipToStart()
+  }, [sudokuArray.length])
 
   const next = () => {
-    if (fail || matrix.checkSuccess()) {
+    if (fail) {
+      addLogs("Fail to find the solution.");
+      setDelay(null);
+      return true;
+    }
+    if (matrix.checkSuccess()) {
       addLogs("The sudoku is completed successfully.");
+      setDelay(null);
       return true;
     }
     let {number} = node, value = 0, nextNode;
@@ -74,9 +90,9 @@ const SudokuProvider = ({ children }) => {
     setDelay(null)
   }
   const skipToStart = () => {
-    const matrix = new Matrix(initialSudoku);
+    setData(sudokuArray[sudokuIndex]);
+    const matrix = new Matrix(sudokuArray[sudokuIndex]);
     matrix.addLogs = addLogs;
-    setData(initialSudoku);
     setMatrix(matrix)
     setNode(matrix.root)
     setFail(false);
@@ -87,6 +103,10 @@ const SudokuProvider = ({ children }) => {
   useInterval(() => {
     next();
   }, delay);
+
+  const skipToEnd = () => {
+    setDelay(0)
+  }
 
   return (
       <SudokuContext.Provider
@@ -99,6 +119,7 @@ const SudokuProvider = ({ children }) => {
             start,
             pause,
             skipToStart,
+            skipToEnd,
           }}
       >
         {children}
