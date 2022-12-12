@@ -42,7 +42,6 @@
 }
 
 .gitlink {
-    flex: 0 0 250px;
     align-self: center;
     margin-right: 30px;
     font-size: 20px;
@@ -86,6 +85,7 @@
 .sudoku table td {
     min-width: 60px;
     min-height: 60px;
+    height: 60px;
 }
 
 table td {
@@ -185,7 +185,7 @@ button {
 }
 
 .footer {
-    flex: 0 0 50px;
+    flex: 0 0 60px;
     display: flex;
     background-color: #282c34;
     color: #ffffff;
@@ -195,20 +195,20 @@ button {
 
 .course {
     flex: 0 0 200px;
-    font-size: 20px;
+    font-size: 16px;
     margin: 0 30px 0 60px;
 }
 
 .semester {
     flex: 0 0 200px;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .author {
     flex: 0 0 600px;
     text-align: right;
     margin: 0 60px 0 0;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .curCell {
