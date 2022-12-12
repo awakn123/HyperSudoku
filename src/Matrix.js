@@ -96,7 +96,7 @@ const Matrix = () => {
           </table>
           <div className="control-area">
             <button onClick={() => setHide(!hide)} style={{width: "auto", height: "60px"}}>{hide ? "Show" : "Hide"} Removed Rows</button>
-            <a href="/solution" rel="noopener noreferrer">
+            <a href="#/solution" rel="noopener noreferrer">
                 => Hyper Sudoku View
             </a>
           </div>
