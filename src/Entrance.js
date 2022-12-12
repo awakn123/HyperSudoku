@@ -11,7 +11,7 @@ function Entrance() {
           </p>
           <a
               className="App-link"
-              href="/solution"
+              href="#/solution"
               rel="noopener noreferrer"
           >
             Enter
