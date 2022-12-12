@@ -33,14 +33,8 @@ const SudokuProvider = ({ children }) => {
   const [matrix, setMatrix] = useState(null)
   const [node, setNode] = useState(null);
   const [delay, setDelay] = useState(null);
-  const [sudokuArray, setSudokuArray] = useState([]);
+  const [sudokuArray, setSudokuArray] = useState(window.INITIAL_SUDOKU);
   const [end, setEnd] = useState(false)
-
-  useEffect(()=>{
-    fetch("/Sudoku.json").then((res) => res.json()).then((res) => {
-      setSudokuArray(res);
-    })
-  }, [])
 
   useEffect(() => {
     skipToStart()
