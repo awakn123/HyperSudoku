@@ -12,7 +12,7 @@ const NeuLayout = ({children}) => {
             </div>
 
             <div className="title">
-              Hyper Sudoku Matrix
+              Hyper Sudoku Solver
             </div>
 
             <div className="placeholder"></div>
@@ -25,7 +25,7 @@ const NeuLayout = ({children}) => {
 
             <div className="gitlink">
               <a href="https://github.com/awakn123/HyperSudoku" target="_blank">
-                Project Page on Github
+                Github
               </a>
             </div>
           </div>
